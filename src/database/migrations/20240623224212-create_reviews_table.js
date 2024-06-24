@@ -32,11 +32,14 @@ module.exports = {
       },
       scores: {
         type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+          min: 1,
+          max: 5,
+        },
       },
       comment: {
-        type: {
-          type: Sequelize.STRING(255),
-        },
+        type: Sequelize.STRING(255),
       },
     });
   },

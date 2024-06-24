@@ -44,6 +44,14 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
+      booking_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "bookings",
+          key: "id",
+        },
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
