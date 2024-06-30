@@ -1,5 +1,6 @@
 const yup = require("yup");
 const User = require("../models/User");
+const Tour = require("../models/Tour");
 
 const userSchema = yup.object().shape({
   name: yup.string().required("O nome e obrigatorio"),
@@ -10,6 +11,14 @@ const userSchema = yup.object().shape({
 });
 
 class UserController {
+  async findAll(req, res) {
+    const users = await User.findAll();
+    if (res) {
+      res.json(users);
+    } else {
+      return users;
+    }
+  }
   async create(req, res) {
     try {
       await userSchema.validate(req.body, {
@@ -42,7 +51,36 @@ class UserController {
       res.status(500).json(error.message);
     }
   }
-  async delete(req, res) {}
+  async delete(req, res) {
+    try {
+      const { id } = req.params;
+      const user = await User.findByPk(id);
+      const tour = await Tour.findAll({
+        where: { user_id: id },
+      });
+      if (!user) {
+        return res.status(404).json({ message: "Usuario não encontrado" });
+      }
+      if (tour.length > 0) {
+        return res.status(403).json({
+          message: "Usuário não se pode eliminar, tem locales asociados!",
+        });
+      } else {
+        await User.destroy({
+          where: {
+            id,
+          },
+        });
+      }
+
+      res.status(200).json({ message: "Usuario eliminado com sucesso" });
+    } catch (error) {
+      console.log(error.message);
+      res
+        .status(500)
+        .json({ error: "Error ao eliminar o usuario", error: error });
+    }
+  }
 }
 
 module.exports = new UserController();

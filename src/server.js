@@ -3,6 +3,7 @@ const cors = require("cors");
 const routes = require("./routes/routes");
 const { connection } = require("./database/connection");
 const PORT_API = process.env.PORT_API;
+const UserController = require("./controllers/UserController");
 
 class Server {
   constructor(server = express()) {
@@ -25,9 +26,16 @@ class Server {
     }
   }
   async initializeServer(app) {
-    app.listen(PORT_API, () =>
-      console.log(`Servidor executando na porta ${PORT_API}`)
-    );
+    app.listen(PORT_API, async () => {
+      console.log(`Servidor executando na porta ${PORT_API}`);
+
+      try {
+        const usuarios = await UserController.findAll();
+        // console.log("Usuarios cadastrados:", usuarios);
+      } catch (error) {
+        console.error("Error al obtener los usuarios:", error);
+      }
+    });
   }
 }
 

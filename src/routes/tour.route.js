@@ -1,17 +1,17 @@
-// const { Router } = require("express");
-// const { auth } = require("../middleware/auth");
-// const TourController = require("../controllers/TourController");
+const { Router } = require("express");
+const { auth } = require("../middleware/auth");
+const TourController = require("../controllers/TourController");
 
-// const tourRoutes = new Router();
+const tourRoutes = new Router();
 
-// tourRoutes.get("/passeio", auth, TourController.findAll);
-// tourRoutes.post("/passeio", auth, TourController.create);
-// tourRoutes.delete("/passeio/:id", auth, TourController.delete);
+tourRoutes.get("/passeio", TourController.findAll);
+tourRoutes.get("/passeio/avaliacao/:id", auth, TourController.findOne_review);
+tourRoutes.post("/passeio", auth, TourController.create);
+tourRoutes.post("/passeio/reserva", auth, TourController.create_booking);
+tourRoutes.post("/passeio/avaliacao", auth, TourController.create_review);
+tourRoutes.put("/passeio/avaliacao/:id", auth, TourController.update_review);
+tourRoutes.delete("/passeio/reserva/:id", TourController.delete_booking);
+tourRoutes.delete("/passeio/:id", TourController.delete);
+tourRoutes.delete("/passeio/avaliacao/:id", auth, TourController.delete_review);
 
-// tourRoutes.post("/passeio/reserva", auth, TourController.booking);
-// tourRoutes.delete("/passeio/reserva/:id", auth, TourController.delete_booking);
-
-// tourRoutes.post("/passeio/avaliacao", auth, TourController.review);
-// tourRoutes.get("/passeio/avaliacao", auth, TourController.findAll_reviews);
-
-// module.exports = tourRoutes;
+module.exports = tourRoutes;

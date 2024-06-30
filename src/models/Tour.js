@@ -10,7 +10,7 @@ const Tour = connection.define("tours", {
   },
   description: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
   local: {
     type: DataTypes.STRING,

@@ -5,7 +5,7 @@ async function auth(req, res, next) {
     console.log("Entramos no Middleware");
     const { authorization } = req.headers;
 
-    req["payload"] = verify(authorization, process.env.SECRECT_JWT);
+    req["payload"] = verify(authorization, process.env.SECRET_JWT);
 
     next();
   } catch (error) {
