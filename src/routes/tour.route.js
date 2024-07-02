@@ -10,8 +10,8 @@ tourRoutes.post("/passeio", auth, TourController.create);
 tourRoutes.post("/passeio/reserva", auth, TourController.create_booking);
 tourRoutes.post("/passeio/avaliacao", auth, TourController.create_review);
 tourRoutes.put("/passeio/avaliacao/:id", auth, TourController.update_review);
-tourRoutes.delete("/passeio/reserva/:id", TourController.delete_booking);
-tourRoutes.delete("/passeio/:id", TourController.delete);
+tourRoutes.delete("/passeio/reserva/:id", auth, TourController.delete_booking);
+tourRoutes.delete("/passeio/:id", auth, TourController.delete);
 tourRoutes.delete("/passeio/avaliacao/:id", auth, TourController.delete_review);
 
 module.exports = tourRoutes;
