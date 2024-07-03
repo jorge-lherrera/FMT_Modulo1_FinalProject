@@ -2,19 +2,25 @@ const yup = require("yup");
 const User = require("../models/User");
 const Tour = require("../models/Tour");
 
-const userSchema = yup.object().shape({
-  name: yup.string().required("O nome e obrigatorio"),
-  email: yup.string().email().required("O email e obrigatorio"),
-  password: yup.string().required("A senha é obrigatoria"),
-  birth_date: yup.string().required("A data de nascimento e obrigatoria"),
-  user_type: yup
-    .string()
-    .oneOf(
-      ["guia", "turista"],
-      "O tipo de usuário deve ser 'guia' ou 'turista'"
-    )
-    .required("O tipo de usuário é obrigatório"),
-});
+const userSchema = yup
+  .object()
+  .shape({
+    name: yup.string().required("O nome e obrigatorio"),
+    email: yup.string().email().required("O email e obrigatorio"),
+    password: yup.string().required("A senha é obrigatoria"),
+    birth_date: yup.string().required("A data de nascimento e obrigatoria"),
+    user_type: yup
+      .string()
+      .oneOf(
+        ["guia", "turista"],
+        "O tipo de usuário deve ser 'guia' ou 'turista'"
+      )
+      .required("O tipo de usuário é obrigatório"),
+  })
+  .noUnknown(
+    true,
+    `Os campos adicionais não são permitidos. Campos obrigatorios: nome, email, password, birth_date, user_type`
+  );
 
 class UserController {
   async findAll(req, res) {
@@ -60,8 +66,15 @@ class UserController {
 
       res.status(201).json({ message: "Usuario criado com sucesso", user });
     } catch (error) {
+      if (error.name === "ValidationError") {
+        const errorMessages = error.errors;
+        return res.status(400).json({ errors: errorMessages });
+      }
       console.log(error.message);
-      res.status(500).json({ error: "Não possível e cadastrar o usuario" });
+      res.status(500).json({
+        error: "Não foi possível cadastrar o usuário",
+        details: error,
+      });
     }
   }
   async delete(req, res) {

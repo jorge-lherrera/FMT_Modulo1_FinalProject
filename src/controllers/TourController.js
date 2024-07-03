@@ -4,35 +4,53 @@ const Booking = require("../models/Booking");
 const User = require("../models/User");
 const Review = require("../models/Review");
 
-const tourSchema = yup.object().shape({
-  tour_title: yup.string().required("O titulo do passeio e obrigatorio"),
-  description: yup.string().required("A descripção e obrigatoria"),
-  local: yup.string().required("Local e obrigatorio"),
-  price: yup.number().required("Preço e obrigatorio"),
-  date: yup.string().required("A data e obrigatoria"),
-  max_number_users: yup
-    .number()
-    .required("Numero maximo de usuarios e obrigatorio"),
-  user_id: yup
-    .number()
-    .required("O id do guia que esta criando o passeio e obrigatorio"),
-});
+const tourSchema = yup
+  .object()
+  .shape({
+    tour_title: yup.string().required("O titulo do passeio e obrigatorio"),
+    description: yup.string().required("A descripção e obrigatoria"),
+    local: yup.string().required("Local e obrigatorio"),
+    price: yup.number().required("Preço e obrigatorio"),
+    date: yup.string().required("A data e obrigatoria"),
+    max_number_users: yup
+      .number()
+      .required("Numero maximo de usuarios e obrigatorio"),
+    user_id: yup
+      .number()
+      .required("O id do guia que esta criando o passeio e obrigatorio"),
+  })
+  .noUnknown(
+    true,
+    "Os campos adicionais não são permitidos. Campos obrigatorios: tour_title, description, local, price, date, max_number_users, user_id"
+  );
 
-const bookingSchema = yup.object().shape({
-  user_id: yup.number().required("User ID e obrigatorio"),
-  tour_id: yup.number().required("Tour ID e obrigatorio"),
-});
+const bookingSchema = yup
+  .object()
+  .shape({
+    user_id: yup.number().required("User ID e obrigatorio"),
+    tour_id: yup.number().required("Tour ID e obrigatorio"),
+  })
+  .noUnknown(
+    true,
+    "Os campos adicionais não são permitidos. Campos obrigatorios: user_id, tour_id"
+  );
 
-const reviewSchema = yup.object().shape({
-  user_id: yup.number().required("User ID e obrigatorio"),
-  tour_id: yup.number().required("Tour ID e obrigatorio"),
-  scores: yup
-    .number()
-    .required("A nota é obrigatória")
-    .min(1, "A nota mínima é 1")
-    .max(5, "A nota máxima é 5"),
-  comment: yup.string(),
-});
+const reviewSchema = yup
+  .object()
+  .shape({
+    user_id: yup.number().required("User ID e obrigatorio"),
+    tour_id: yup.number().required("Tour ID e obrigatorio"),
+    scores: yup
+      .number()
+      .required("A nota é obrigatória")
+      .min(1, "A nota mínima é 1")
+      .max(5, "A nota máxima é 5"),
+    comment: yup.string(),
+  })
+  .noUnknown(
+    true,
+    "Os campos adicionais não são permitidos. Campos obrigatorios: user_id, tour_id, scores, comment"
+  );
 
 const modelMap = {
   Tour,
