@@ -86,23 +86,26 @@ class TourController {
         return res.status(404).json({ message: "Passeio não existe" });
       }
 
-      const review = await Review.findByPk(id);
+      const toursReview = await Review.findAll({
+        where: { tour_id: id },
+      });
+
+      if (toursReview.length === 0) {
+        return res
+          .status(404)
+          .json({ message: "O passeio ainda não tem avaliações " });
+      }
+
       const permission = await checkUserPermission(
         req,
         res,
         id,
-        "Review",
+        "Tour",
         "findReview"
       );
       if (!permission) return;
 
-      if (!review) {
-        res
-          .status(404)
-          .json({ message: "O passeio ainda não tem avaliações " });
-      } else {
-        return res.json(review);
-      }
+      res.json({ message: "Avaliação de este passeio", toursReview });
     } catch (error) {
       console.log(error.message);
       res.status(500).json({ error: "Error ao achar a passeio", error: error });
@@ -160,7 +163,9 @@ class TourController {
       });
 
       if (booking.count >= tour.max_number_users) {
-        return res.status(400).json({ message: "Tour is fully booked" });
+        return res
+          .status(400)
+          .json({ message: "As reservas para este passeio estão esgotadas" });
       }
 
       const create_booking = await Booking.create({
@@ -182,6 +187,14 @@ class TourController {
         strict: true,
       });
       const { user_id, tour_id, scores, comment } = req.body;
+
+      const tour = await Tour.findByPk(tour_id);
+      const user = await User.findByPk(user_id);
+
+      if (!tour || !user) {
+        return res.status(404).json("Passeio ou Usuario não existe");
+      }
+
       const create_review = await Review.create({
         user_id,
         tour_id,
@@ -199,6 +212,7 @@ class TourController {
   async delete(req, res) {
     try {
       const { id } = req.params;
+
       const tour = await Tour.findByPk(id);
       if (!tour) {
         return res.status(404).json({ message: "Passeio não encontrado" });
@@ -215,9 +229,7 @@ class TourController {
       const deleted = await Tour.destroy({
         where: { id },
       });
-      res
-        .status(200)
-        .json({ message: "Passeio eliminado com sucesso", deleted });
+      res.status(200).json({ message: "Passeio eliminado com sucesso" });
     } catch (error) {
       console.log(error.message);
       res
@@ -245,9 +257,7 @@ class TourController {
       const deleted = await Booking.destroy({
         where: { id },
       });
-      res
-        .status(200)
-        .json({ message: "Reserva eliminado com sucesso", deleted });
+      res.status(200).json({ message: "Reserva eliminado com sucesso" });
     } catch (error) {
       console.log(error.message);
       res
@@ -298,6 +308,23 @@ class TourController {
         return res.status(404).json({ message: "Avaliação não encontrado!" });
       }
 
+      const { user_id, tour_id } = req.body;
+
+      const tour = await Tour.findOne({
+        where: { id: tour_id },
+      });
+      const user = await User.findOne({
+        where: { id: user_id },
+      });
+
+      if (!tour || !user) {
+        return res
+          .status(404)
+          .json(
+            "Não se pode atualizar uma avaliação de usuario o passeio que não existe"
+          );
+      }
+
       const permission = await checkUserPermission(
         req,
         res,
@@ -307,7 +334,7 @@ class TourController {
       );
       if (!permission) return;
 
-      review.update(req.body);
+      await review.update(req.body);
       await review.save();
       res.json(review);
     } catch (error) {
