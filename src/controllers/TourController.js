@@ -9,7 +9,7 @@ const tourSchema = yup.object().shape({
   description: yup.string().required("A descripção e obrigatoria"),
   local: yup.string().required("Local e obrigatorio"),
   price: yup.number().required("Preço e obrigatorio"),
-  // date: yup.date().required("A data e obrigatoria"),
+  date: yup.string().required("A data e obrigatoria"),
   max_number_users: yup
     .number()
     .required("Numero maximo de usuarios e obrigatorio"),
@@ -17,6 +17,57 @@ const tourSchema = yup.object().shape({
     .number()
     .required("O id do guia que esta criando o passeio e obrigatorio"),
 });
+
+const bookingSchema = yup.object().shape({
+  user_id: yup.number().required("User ID e obrigatorio"),
+  tour_id: yup.number().required("Tour ID e obrigatorio"),
+});
+
+const reviewSchema = yup.object().shape({
+  user_id: yup.number().required("User ID e obrigatorio"),
+  tour_id: yup.number().required("Tour ID e obrigatorio"),
+  scores: yup
+    .number()
+    .required("A nota é obrigatória")
+    .min(1, "A nota mínima é 1")
+    .max(5, "A nota máxima é 5"),
+  comment: yup.string(),
+});
+
+const modelMap = {
+  Tour,
+  Booking,
+  Review,
+};
+
+const errorMap = {
+  findReview: "revisar as avaliações de este passeio",
+  deleteTour: "deletar este passeio",
+  deleteBooking: "deletar esta reserva",
+  deleteReview: "deletar esta avaliação",
+  updateReview: "atualizar esta avaliação",
+};
+
+async function checkUserPermission(req, res, id, modelName, error) {
+  try {
+    const { sub: user_id } = req.payload;
+
+    const model = modelMap[modelName];
+    const handleError = errorMap[error];
+    const check = await model.findOne({ where: { id, user_id } });
+
+    if (!check) {
+      res.status(403).json({
+        message: `Você não tem permissão para ${handleError}`,
+      });
+      return false;
+    }
+    return true;
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao verificar permissão", error });
+    return false;
+  }
+}
 
 class TourController {
   async findAll(req, res) {
@@ -30,11 +81,20 @@ class TourController {
   async findOne_review(req, res) {
     try {
       const { id } = req.params;
-      // const tour = await Tour.findByPk(id);
-      // if (!tour) {
-      //   return res.status(404).json({ message: "Passeio não existe" });
-      // }
+      const tour = await Tour.findByPk(id);
+      if (!tour) {
+        return res.status(404).json({ message: "Passeio não existe" });
+      }
+
       const review = await Review.findByPk(id);
+      const permission = await checkUserPermission(
+        req,
+        res,
+        id,
+        "Review",
+        "findReview"
+      );
+      if (!permission) return;
 
       if (!review) {
         res
@@ -83,6 +143,10 @@ class TourController {
   }
   async create_booking(req, res) {
     try {
+      await bookingSchema.validate(req.body, {
+        abortEarly: false,
+        strict: true,
+      });
       const { user_id, tour_id } = req.body;
       const tour = await Tour.findByPk(tour_id);
       const user = await User.findByPk(user_id);
@@ -113,6 +177,10 @@ class TourController {
   }
   async create_review(req, res) {
     try {
+      await reviewSchema.validate(req.body, {
+        abortEarly: false,
+        strict: true,
+      });
       const { user_id, tour_id, scores, comment } = req.body;
       const create_review = await Review.create({
         user_id,
@@ -135,6 +203,15 @@ class TourController {
       if (!tour) {
         return res.status(404).json({ message: "Passeio não encontrado" });
       }
+      const permission = await checkUserPermission(
+        req,
+        res,
+        id,
+        "Tour",
+        "deleteTour"
+      );
+      if (!permission) return;
+
       const deleted = await Tour.destroy({
         where: { id },
       });
@@ -156,6 +233,15 @@ class TourController {
         return res.status(404).json({ message: "Reserva não encontrado" });
       }
 
+      const permission = await checkUserPermission(
+        req,
+        res,
+        id,
+        "Booking",
+        "deleteBooking"
+      );
+      if (!permission) return;
+
       const deleted = await Booking.destroy({
         where: { id },
       });
@@ -169,25 +255,6 @@ class TourController {
         .json({ error: "Error ao eliminar a reserva", error: error });
     }
   }
-  async update_review(req, res) {
-    try {
-      const { id } = req.params;
-      const review = await Review.findByPk(id);
-
-      if (!review) {
-        return res.status(404).json({ message: "Avaliação não encontrado!" });
-      }
-      review.update(req.body);
-      await review.save();
-      res.json(review);
-    } catch (error) {
-      console.log(error.message);
-      res.status(500).json({
-        error: "Não foi possível atualizar a avaliação especificado",
-        error: error,
-      });
-    }
-  }
   async delete_review(req, res) {
     try {
       const { id } = req.params;
@@ -195,6 +262,15 @@ class TourController {
       if (!review) {
         return res.status(404).json({ message: "Avaliação não encontrado" });
       }
+
+      const permission = await checkUserPermission(
+        req,
+        res,
+        id,
+        "Review",
+        "deleteReview"
+      );
+      if (!permission) return;
 
       const deleted = await Review.destroy({
         where: { id },
@@ -207,6 +283,39 @@ class TourController {
       res
         .status(500)
         .json({ error: "Error ao eliminar a avaliação", error: error });
+    }
+  }
+  async update_review(req, res) {
+    try {
+      await reviewSchema.validate(req.body, {
+        abortEarly: false,
+        strict: true,
+      });
+      const { id } = req.params;
+      const review = await Review.findByPk(id);
+
+      if (!review) {
+        return res.status(404).json({ message: "Avaliação não encontrado!" });
+      }
+
+      const permission = await checkUserPermission(
+        req,
+        res,
+        id,
+        "Review",
+        "updateReview"
+      );
+      if (!permission) return;
+
+      review.update(req.body);
+      await review.save();
+      res.json(review);
+    } catch (error) {
+      console.log(error.message);
+      res.status(500).json({
+        error: "Não foi possível atualizar a avaliação especificado",
+        error: error,
+      });
     }
   }
 }
