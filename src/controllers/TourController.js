@@ -165,7 +165,7 @@ class TourController {
       if (booking.count >= tour.max_number_users) {
         return res
           .status(400)
-          .json({ message: "As reservas para este passeio estão esgotadas" });
+          .json("As reservas para este passeio estão esgotadas");
       }
 
       const create_booking = await Booking.create({
