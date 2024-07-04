@@ -19,7 +19,7 @@ const userSchema = yup
   })
   .noUnknown(
     true,
-    `Os campos adicionais não são permitidos. Campos obrigatorios: nome, email, password, birth_date, user_type`
+    `Os campos adicionais não são permitidos. Campos obrigatorios: name, email, password, birth_date, user_type`
   );
 
 class UserController {

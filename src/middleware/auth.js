@@ -10,7 +10,7 @@ async function auth(req, res, next) {
     next();
   } catch (error) {
     return res.status(401).json({
-      message: "Autenticação Falhou",
+      message: "Autenticação falhou, token requerido",
       cause: error.message,
     });
   }
