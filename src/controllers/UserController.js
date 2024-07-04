@@ -1,14 +1,19 @@
 const User = require("../models/User");
 const Tour = require("../models/Tour");
 const { userSchema } = require("../middleware/validationSchemas");
+const checkUserPermission = require("../middleware/validationUserPermission");
 
 class UserController {
   async findAll(req, res) {
-    const users = await User.findAll();
-    if (res) {
-      res.json(users);
-    } else {
+    try {
+      const users = await User.findAll();
+      if (res) {
+        return res.json(users);
+      }
       return users;
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ error: "Erro ao buscar usuarios" });
     }
   }
   async create(req, res) {
@@ -73,7 +78,7 @@ class UserController {
       if (tour.length > 0) {
         return res.status(403).json({
           message:
-            "Usuário não pode ser eliminado, pois tem locais associados!",
+            "Usuário não pode ser eliminado, pois tem passeios associados!",
         });
       }
 
