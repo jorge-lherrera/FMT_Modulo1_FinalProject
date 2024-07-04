@@ -1,79 +1,12 @@
-const yup = require("yup");
 const Tour = require("../models/Tour");
 const Booking = require("../models/Booking");
 const User = require("../models/User");
 const Review = require("../models/Review");
-
-const tourSchema = yup
-  .object()
-  .shape({
-    tour_title: yup.string().required("O titulo do passeio e obrigatorio"),
-    description: yup.string().required("A descripção e obrigatoria"),
-    local: yup.string().required("Local e obrigatorio"),
-    price: yup
-      .number()
-      .required("Preço e obrigatorio")
-      .positive("O preço deve ser um número positivo")
-      .integer("O preço deve ser um número inteiro"),
-    date: yup.string().required("A data e obrigatoria"),
-    max_number_users: yup
-      .number()
-      .required("Numero maximo de usuarios e obrigatorio")
-      .positive("O numero maximo de usuarios deve ser um número positivo")
-      .integer("O numero maximo de usuarios deve ser um número inteiro"),
-    user_id: yup
-      .number()
-      .required("O id do guia que esta criando o passeio e obrigatorio"),
-  })
-  .noUnknown(
-    true,
-    "Os campos adicionais não são permitidos. Campos obrigatorios: tour_title, description, local, price, date, max_number_users, user_id"
-  );
-
-const bookingSchema = yup
-  .object()
-  .shape({
-    user_id: yup
-      .number()
-      .required("User ID e obrigatorio")
-      .positive("O ID de user deve ser um número positivo")
-      .integer("O ID de user deve ser um número inteiro"),
-    tour_id: yup
-      .number()
-      .required("Tour ID e obrigatorio")
-      .positive("O ID de tour deve ser um número positivo")
-      .integer("O ID de tour deve ser um número inteiro"),
-  })
-  .noUnknown(
-    true,
-    "Os campos adicionais não são permitidos. Campos obrigatorios: user_id, tour_id"
-  );
-
-const reviewSchema = yup
-  .object()
-  .shape({
-    user_id: yup
-      .number()
-      .required("User ID e obrigatorio")
-      .positive("O ID de user deve ser um número positivo")
-      .integer("O ID de user deve ser um número inteiro"),
-    tour_id: yup
-      .number()
-      .required("Tour ID e obrigatorio")
-      .positive("O ID de tour deve ser um número positivo")
-      .integer("O ID de tour deve ser um número inteiro"),
-    scores: yup
-      .number()
-      .required("A nota é obrigatória")
-      .integer("O scores deve ser um número inteiro")
-      .min(1, "A nota mínima é 1")
-      .max(5, "A nota máxima é 5"),
-    comment: yup.string(),
-  })
-  .noUnknown(
-    true,
-    "Os campos adicionais não são permitidos. Campos obrigatorios: user_id, tour_id, scores"
-  );
+const {
+  tourSchema,
+  bookingSchema,
+  reviewSchema,
+} = require("../middleware/validations");
 
 const modelMap = {
   Tour,
@@ -148,8 +81,15 @@ class TourController {
 
       res.json({ message: "Avaliações de este passeio", toursReview });
     } catch (error) {
+      if (error.name === "ValidationError") {
+        const errorMessages = error.errors;
+        return res.status(400).json({ errors: errorMessages });
+      }
       console.log(error.message);
-      res.status(500).json({ error: "Error ao achar a passeio", error: error });
+      res.status(500).json({
+        error: "Error ao achar a passeio",
+        details: error,
+      });
     }
   }
   async create_tour(req, res) {
@@ -197,8 +137,15 @@ class TourController {
         .status(201)
         .json({ message: "Passeio criado com sucesso", create_tour });
     } catch (error) {
+      if (error.name === "ValidationError") {
+        const errorMessages = error.errors;
+        return res.status(400).json({ errors: errorMessages });
+      }
       console.log(error.message);
-      res.status(500).json(error.message);
+      res.status(500).json({
+        error: "Não foi possível cadastrar o passeio",
+        details: error,
+      });
     }
   }
   async create_booking(req, res) {
@@ -233,8 +180,15 @@ class TourController {
         .status(201)
         .json({ message: "Reserva criado com sucesso", create_booking });
     } catch (error) {
+      if (error.name === "ValidationError") {
+        const errorMessages = error.errors;
+        return res.status(400).json({ errors: errorMessages });
+      }
       console.log(error.message);
-      res.status(500).json(error.message);
+      res.status(500).json({
+        error: "Não foi possível cadastrar a reserva",
+        details: error,
+      });
     }
   }
   async create_review(req, res) {
@@ -262,8 +216,15 @@ class TourController {
         .status(201)
         .json({ message: "Avaliação criado com sucesso", create_review });
     } catch (error) {
+      if (error.name === "ValidationError") {
+        const errorMessages = error.errors;
+        return res.status(400).json({ errors: errorMessages });
+      }
       console.log(error.message);
-      res.status(500).json(error.message);
+      res.status(500).json({
+        error: "Não foi possível cadastrar a avaliação",
+        details: error,
+      });
     }
   }
   async delete_tour(req, res) {
@@ -299,10 +260,15 @@ class TourController {
       });
       res.status(200).json({ message: "Passeio eliminado com sucesso" });
     } catch (error) {
+      if (error.name === "ValidationError") {
+        const errorMessages = error.errors;
+        return res.status(400).json({ errors: errorMessages });
+      }
       console.log(error.message);
-      res
-        .status(500)
-        .json({ error: "Error ao eliminar a passeio", error: error });
+      res.status(500).json({
+        error: "Error ao eliminar a passeio",
+        details: error,
+      });
     }
   }
   async delete_booking(req, res) {
@@ -327,10 +293,15 @@ class TourController {
       });
       res.status(200).json({ message: "Reserva eliminado com sucesso" });
     } catch (error) {
+      if (error.name === "ValidationError") {
+        const errorMessages = error.errors;
+        return res.status(400).json({ errors: errorMessages });
+      }
       console.log(error.message);
-      res
-        .status(500)
-        .json({ error: "Error ao eliminar a reserva", error: error });
+      res.status(500).json({
+        error: "Error ao eliminar a reserva",
+        details: error,
+      });
     }
   }
   async delete_review(req, res) {
@@ -355,10 +326,15 @@ class TourController {
       });
       res.status(200).json({ message: "Avaliação eliminado com sucesso" });
     } catch (error) {
+      if (error.name === "ValidationError") {
+        const errorMessages = error.errors;
+        return res.status(400).json({ errors: errorMessages });
+      }
       console.log(error.message);
-      res
-        .status(500)
-        .json({ error: "Error ao eliminar a avaliação", error: error });
+      res.status(500).json({
+        error: "Error ao eliminar a avaliação",
+        details: error,
+      });
     }
   }
   async update_review(req, res) {

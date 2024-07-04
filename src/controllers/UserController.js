@@ -1,26 +1,6 @@
-const yup = require("yup");
 const User = require("../models/User");
 const Tour = require("../models/Tour");
-
-const userSchema = yup
-  .object()
-  .shape({
-    name: yup.string().required("O nome e obrigatorio"),
-    email: yup.string().email().required("O email e obrigatorio"),
-    password: yup.string().required("A senha é obrigatoria"),
-    birth_date: yup.string().required("A data de nascimento e obrigatoria"),
-    user_type: yup
-      .string()
-      .oneOf(
-        ["guia", "turista"],
-        "O tipo de usuário deve ser 'guia' ou 'turista'"
-      )
-      .required("O tipo de usuário é obrigatório"),
-  })
-  .noUnknown(
-    true,
-    `Os campos adicionais não são permitidos. Campos obrigatorios: name, email, password, birth_date, user_type`
-  );
+const { userSchema } = require("../middleware/validations");
 
 class UserController {
   async findAll(req, res) {
@@ -111,10 +91,15 @@ class UserController {
 
       res.status(200).json({ message: "Usuario eliminado com sucesso" });
     } catch (error) {
+      if (error.name === "ValidationError") {
+        const errorMessages = error.errors;
+        return res.status(400).json({ errors: errorMessages });
+      }
       console.log(error.message);
-      res
-        .status(500)
-        .json({ error: "Error ao eliminar o usuario", error: error });
+      res.status(500).json({
+        error: "Error ao eliminar o usuario",
+        details: error,
+      });
     }
   }
 }

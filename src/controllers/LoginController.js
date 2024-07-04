@@ -1,17 +1,6 @@
-const yup = require("yup");
 const { sign } = require("jsonwebtoken");
 const User = require("../models/User");
-
-const loginSchema = yup
-  .object()
-  .shape({
-    email: yup.string().email().required("O email e obrigatorio"),
-    password: yup.string().required("A senha é obrigatoria"),
-  })
-  .noUnknown(
-    true,
-    `Os campos adicionais não são permitidos. Campos obrigatorios: email, password`
-  );
+const { loginSchema } = require("../middleware/validations");
 
 class LoginController {
   async login(req, res) {
