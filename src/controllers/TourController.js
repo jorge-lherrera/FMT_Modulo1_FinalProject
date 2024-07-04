@@ -27,12 +27,12 @@ async function checkUserPermission(req, res, id, modelName, error) {
     const { sub: user_id } = req.payload;
 
     const model = modelMap[modelName];
-    const handleError = errorMap[error];
+    const handlePermissionError = errorMap[error];
     const check = await model.findOne({ where: { id, user_id } });
 
     if (!check) {
       res.status(403).json({
-        message: `Você não tem permissão para ${handleError}`,
+        message: `Você não tem permissão para ${handlePermissionError}`,
       });
       return false;
     }
