@@ -1,6 +1,6 @@
 const User = require("../models/User");
 const Tour = require("../models/Tour");
-const { userSchema } = require("../middleware/validations");
+const { userSchema } = require("../middleware/validationSchemas");
 
 class UserController {
   async findAll(req, res) {

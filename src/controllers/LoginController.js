@@ -1,6 +1,6 @@
 const { sign } = require("jsonwebtoken");
 const User = require("../models/User");
-const { loginSchema } = require("../middleware/validations");
+const { loginSchema } = require("../middleware/validationSchemas");
 
 class LoginController {
   async login(req, res) {

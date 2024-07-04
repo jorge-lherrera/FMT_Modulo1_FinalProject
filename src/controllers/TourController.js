@@ -6,7 +6,7 @@ const {
   tourSchema,
   bookingSchema,
   reviewSchema,
-} = require("../middleware/validations");
+} = require("../middleware/validationSchemas");
 
 const modelMap = {
   Tour,
