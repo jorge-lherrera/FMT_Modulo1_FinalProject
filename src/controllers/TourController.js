@@ -10,11 +10,17 @@ const tourSchema = yup
     tour_title: yup.string().required("O titulo do passeio e obrigatorio"),
     description: yup.string().required("A descripção e obrigatoria"),
     local: yup.string().required("Local e obrigatorio"),
-    price: yup.number().required("Preço e obrigatorio"),
+    price: yup
+      .number()
+      .required("Preço e obrigatorio")
+      .positive("O preço deve ser um número positivo")
+      .integer("O preço deve ser um número inteiro"),
     date: yup.string().required("A data e obrigatoria"),
     max_number_users: yup
       .number()
-      .required("Numero maximo de usuarios e obrigatorio"),
+      .required("Numero maximo de usuarios e obrigatorio")
+      .positive("O numero maximo de usuarios deve ser um número positivo")
+      .integer("O numero maximo de usuarios deve ser um número inteiro"),
     user_id: yup
       .number()
       .required("O id do guia que esta criando o passeio e obrigatorio"),
@@ -27,8 +33,16 @@ const tourSchema = yup
 const bookingSchema = yup
   .object()
   .shape({
-    user_id: yup.number().required("User ID e obrigatorio"),
-    tour_id: yup.number().required("Tour ID e obrigatorio"),
+    user_id: yup
+      .number()
+      .required("User ID e obrigatorio")
+      .positive("O ID de user deve ser um número positivo")
+      .integer("O ID de user deve ser um número inteiro"),
+    tour_id: yup
+      .number()
+      .required("Tour ID e obrigatorio")
+      .positive("O ID de tour deve ser um número positivo")
+      .integer("O ID de tour deve ser um número inteiro"),
   })
   .noUnknown(
     true,
@@ -38,18 +52,27 @@ const bookingSchema = yup
 const reviewSchema = yup
   .object()
   .shape({
-    user_id: yup.number().required("User ID e obrigatorio"),
-    tour_id: yup.number().required("Tour ID e obrigatorio"),
+    user_id: yup
+      .number()
+      .required("User ID e obrigatorio")
+      .positive("O ID de user deve ser um número positivo")
+      .integer("O ID de user deve ser um número inteiro"),
+    tour_id: yup
+      .number()
+      .required("Tour ID e obrigatorio")
+      .positive("O ID de tour deve ser um número positivo")
+      .integer("O ID de tour deve ser um número inteiro"),
     scores: yup
       .number()
       .required("A nota é obrigatória")
+      .integer("O scores deve ser um número inteiro")
       .min(1, "A nota mínima é 1")
       .max(5, "A nota máxima é 5"),
     comment: yup.string(),
   })
   .noUnknown(
     true,
-    "Os campos adicionais não são permitidos. Campos obrigatorios: user_id, tour_id, scores, comment"
+    "Os campos adicionais não são permitidos. Campos obrigatorios: user_id, tour_id, scores"
   );
 
 const modelMap = {
@@ -88,7 +111,7 @@ async function checkUserPermission(req, res, id, modelName, error) {
 }
 
 class TourController {
-  async findAll(req, res) {
+  async findAll_tours(req, res) {
     const tours = await Tour.findAll();
     if (res) {
       res.json(tours);
@@ -123,13 +146,13 @@ class TourController {
       );
       if (!permission) return;
 
-      res.json({ message: "Avaliação de este passeio", toursReview });
+      res.json({ message: "Avaliações de este passeio", toursReview });
     } catch (error) {
       console.log(error.message);
       res.status(500).json({ error: "Error ao achar a passeio", error: error });
     }
   }
-  async create(req, res) {
+  async create_tour(req, res) {
     try {
       await tourSchema.validate(req.body, {
         abortEarly: false,
@@ -146,7 +169,21 @@ class TourController {
         user_id,
       } = req.body;
 
-      const tour = await Tour.create({
+      if (!date.match(/\d{4}-\d{2}-\d{2}/gm)) {
+        return res.status(400).json({
+          message: "Formato correto da data de nascimento e ANO-MES-DIA",
+        });
+      }
+
+      const user = await User.findByPk(user_id);
+
+      if (!user) {
+        return res
+          .status(404)
+          .json("Passeio deve estar vinculado a um usuario existente");
+      }
+
+      const create_tour = await Tour.create({
         tour_title,
         description,
         local,
@@ -156,7 +193,9 @@ class TourController {
         user_id,
       });
 
-      res.status(201).json({ message: "Passeio criado com sucesso", tour });
+      res
+        .status(201)
+        .json({ message: "Passeio criado com sucesso", create_tour });
     } catch (error) {
       console.log(error.message);
       res.status(500).json(error.message);
@@ -227,7 +266,7 @@ class TourController {
       res.status(500).json(error.message);
     }
   }
-  async delete(req, res) {
+  async delete_tour(req, res) {
     try {
       const { id } = req.params;
 
@@ -235,6 +274,17 @@ class TourController {
       if (!tour) {
         return res.status(404).json({ message: "Passeio não encontrado" });
       }
+      const tourBookings = await Booking.findAll({
+        where: { tour_id: id },
+      });
+
+      if (tourBookings.length > 0) {
+        return res.status(403).json({
+          message:
+            "Passeio não pode ser eliminado, pois tem reservas associadas!",
+        });
+      }
+
       const permission = await checkUserPermission(
         req,
         res,
@@ -244,7 +294,7 @@ class TourController {
       );
       if (!permission) return;
 
-      const deleted = await Tour.destroy({
+      await Tour.destroy({
         where: { id },
       });
       res.status(200).json({ message: "Passeio eliminado com sucesso" });
@@ -272,7 +322,7 @@ class TourController {
       );
       if (!permission) return;
 
-      const deleted = await Booking.destroy({
+      await Booking.destroy({
         where: { id },
       });
       res.status(200).json({ message: "Reserva eliminado com sucesso" });
@@ -300,12 +350,10 @@ class TourController {
       );
       if (!permission) return;
 
-      const deleted = await Review.destroy({
+      await Review.destroy({
         where: { id },
       });
-      res
-        .status(200)
-        .json({ message: "Avaliação eliminado com sucesso", deleted });
+      res.status(200).json({ message: "Avaliação eliminado com sucesso" });
     } catch (error) {
       console.log(error.message);
       res
@@ -319,6 +367,7 @@ class TourController {
         abortEarly: false,
         strict: true,
       });
+
       const { id } = req.params;
       const review = await Review.findByPk(id);
 
@@ -356,10 +405,14 @@ class TourController {
       await review.save();
       res.json(review);
     } catch (error) {
+      if (error.name === "ValidationError") {
+        const errorMessages = error.errors;
+        return res.status(400).json({ errors: errorMessages });
+      }
       console.log(error.message);
       res.status(500).json({
-        error: "Não foi possível atualizar a avaliação especificado",
-        error: error,
+        error: "Não foi possível atualizar a avaliação",
+        details: error,
       });
     }
   }
