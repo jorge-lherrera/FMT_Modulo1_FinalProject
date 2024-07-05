@@ -8,6 +8,7 @@ const {
   reviewSchema,
 } = require("../middleware/validationSchemas");
 const checkUserPermission = require("../middleware/validationUserPermission");
+const handleCatchError = require("../middleware/handleCatchErrors");
 
 class TourController {
   async findAll_tours(req, res) {
@@ -18,11 +19,9 @@ class TourController {
       }
       return tours;
     } catch (error) {
-      console.error(error);
-      return res.status(500).json({ error: "Erro ao buscar passeios" });
+      handleCatchError(error, res, "findAll_tours");
     }
   }
-
   async findOne_review(req, res) {
     try {
       const { id } = req.params;
@@ -108,15 +107,7 @@ class TourController {
         .status(201)
         .json({ message: "Passeio criado com sucesso", create_tour });
     } catch (error) {
-      if (error.name === "ValidationError") {
-        const errorMessages = error.errors;
-        return res.status(400).json({ errors: errorMessages });
-      }
-      console.log(error.message);
-      res.status(500).json({
-        error: "Não foi possível cadastrar o passeio",
-        details: error,
-      });
+      handleCatchError(error, res, "create_tour");
     }
   }
   async create_booking(req, res) {
@@ -151,15 +142,7 @@ class TourController {
         .status(201)
         .json({ message: "Reserva criado com sucesso", create_booking });
     } catch (error) {
-      if (error.name === "ValidationError") {
-        const errorMessages = error.errors;
-        return res.status(400).json({ errors: errorMessages });
-      }
-      console.log(error.message);
-      res.status(500).json({
-        error: "Não foi possível cadastrar a reserva",
-        details: error,
-      });
+      handleCatchError(error, res, "create_booking");
     }
   }
   async create_review(req, res) {
@@ -187,15 +170,7 @@ class TourController {
         .status(201)
         .json({ message: "Avaliação criado com sucesso", create_review });
     } catch (error) {
-      if (error.name === "ValidationError") {
-        const errorMessages = error.errors;
-        return res.status(400).json({ errors: errorMessages });
-      }
-      console.log(error.message);
-      res.status(500).json({
-        error: "Não foi possível cadastrar a avaliação",
-        details: error,
-      });
+      handleCatchError(error, res, "create_review");
     }
   }
   async delete_tour(req, res) {
@@ -231,15 +206,7 @@ class TourController {
       });
       res.status(200).json({ message: "Passeio eliminado com sucesso" });
     } catch (error) {
-      if (error.name === "ValidationError") {
-        const errorMessages = error.errors;
-        return res.status(400).json({ errors: errorMessages });
-      }
-      console.log(error.message);
-      res.status(500).json({
-        error: "Error ao eliminar a passeio",
-        details: error,
-      });
+      handleCatchError(error, res, "delete_tour");
     }
   }
   async delete_booking(req, res) {
@@ -264,15 +231,7 @@ class TourController {
       });
       res.status(200).json({ message: "Reserva eliminado com sucesso" });
     } catch (error) {
-      if (error.name === "ValidationError") {
-        const errorMessages = error.errors;
-        return res.status(400).json({ errors: errorMessages });
-      }
-      console.log(error.message);
-      res.status(500).json({
-        error: "Error ao eliminar a reserva",
-        details: error,
-      });
+      handleCatchError(error, res, "delete_booking");
     }
   }
   async delete_review(req, res) {
@@ -297,15 +256,7 @@ class TourController {
       });
       res.status(200).json({ message: "Avaliação eliminado com sucesso" });
     } catch (error) {
-      if (error.name === "ValidationError") {
-        const errorMessages = error.errors;
-        return res.status(400).json({ errors: errorMessages });
-      }
-      console.log(error.message);
-      res.status(500).json({
-        error: "Error ao eliminar a avaliação",
-        details: error,
-      });
+      handleCatchError(error, res, "delete_review");
     }
   }
   async update_review(req, res) {
@@ -352,15 +303,7 @@ class TourController {
       await review.save();
       res.json(review);
     } catch (error) {
-      if (error.name === "ValidationError") {
-        const errorMessages = error.errors;
-        return res.status(400).json({ errors: errorMessages });
-      }
-      console.log(error.message);
-      res.status(500).json({
-        error: "Não foi possível atualizar a avaliação",
-        details: error,
-      });
+      handleCatchError(error, res, "update_review");
     }
   }
 }

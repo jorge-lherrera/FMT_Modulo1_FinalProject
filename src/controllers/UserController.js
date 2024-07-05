@@ -1,7 +1,7 @@
 const User = require("../models/User");
 const Tour = require("../models/Tour");
 const { userSchema } = require("../middleware/validationSchemas");
-const checkUserPermission = require("../middleware/validationUserPermission");
+const handleCatchError = require("../middleware/handleCatchErrors");
 
 class UserController {
   async findAll(req, res) {
@@ -13,7 +13,7 @@ class UserController {
       return users;
     } catch (error) {
       console.error(error);
-      return res.status(500).json({ error: "Erro ao buscar usuarios" });
+      handleCatchError(error, res, "findAll_users");
     }
   }
   async create(req, res) {
@@ -51,15 +51,7 @@ class UserController {
 
       res.status(201).json({ message: "Usuario criado com sucesso", user });
     } catch (error) {
-      if (error.name === "ValidationError") {
-        const errorMessages = error.errors;
-        return res.status(400).json({ errors: errorMessages });
-      }
-      console.log(error.message);
-      res.status(500).json({
-        error: "Não foi possível cadastrar o usuário",
-        details: error,
-      });
+      handleCatchError(error, res, "create_user");
     }
   }
   async delete(req, res) {
@@ -96,15 +88,7 @@ class UserController {
 
       res.status(200).json({ message: "Usuario eliminado com sucesso" });
     } catch (error) {
-      if (error.name === "ValidationError") {
-        const errorMessages = error.errors;
-        return res.status(400).json({ errors: errorMessages });
-      }
-      console.log(error.message);
-      res.status(500).json({
-        error: "Error ao eliminar o usuario",
-        details: error,
-      });
+      handleCatchError(error, res, "delete_user");
     }
   }
 }
