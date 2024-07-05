@@ -1,3 +1,4 @@
+const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const Tour = require("../models/Tour");
 const { userSchema } = require("../middleware/validationSchemas");
@@ -41,10 +42,12 @@ class UserController {
           .json("O email inserido já existe. Por favor, escolha outro.");
       }
 
+      const hash = await bcrypt.hash(password, 8);
+
       const user = await User.create({
         name,
         email,
-        password,
+        password: hash,
         birth_date,
         user_type,
       });

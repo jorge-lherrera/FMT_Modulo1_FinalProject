@@ -1,4 +1,5 @@
 const { sign } = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const { loginSchema } = require("../middleware/validationSchemas");
 
@@ -13,11 +14,19 @@ class LoginController {
       const { email, password } = req.body;
 
       const user = await User.findOne({
-        where: { email, password },
+        where: { email },
       });
       if (!user) {
         return res.status(404).json({
           error: "Nenhum usuario corresponde a email e senhas fornecidos!",
+        });
+      }
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+
+      if (!isPasswordValid) {
+        return res.status(404).json({
+          error: "Senha incorreta!",
         });
       }
 
@@ -27,15 +36,7 @@ class LoginController {
 
       res.status(200).json({ Token: token });
     } catch (error) {
-      if (error.name === "ValidationError") {
-        const errorMessages = error.errors;
-        return res.status(400).json({ errors: errorMessages });
-      }
-      console.log(error.message);
-      res.status(500).json({
-        error: "Algo deu errado!",
-        details: error,
-      });
+      handleCatchError(error, res, "login");
     }
   }
 }

@@ -1,4 +1,5 @@
 const catchErrorMap = {
+  login: "Falha em fazer login",
   findAll_users: "Erro ao buscar usuarios",
   findAll_tours: "Erro ao buscar passeios",
   findOne_review: "Error ao achar a passeio",
