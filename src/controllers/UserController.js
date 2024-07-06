@@ -8,20 +8,20 @@ class UserController {
   async findAll(req, res) {
     /*  
       #swagger.tags = ['Usuarios']
-      #swagger.description = 'Endpoint para obtener todos los usuarios'
+      #swagger.description = 'Endpoint para obter todos os usuarios'
       #swagger.responses[200] = {
-        description: 'Lista de usuarios obtenida con éxito',
+        description: 'Lista de usuarios obtidas com sucesso',
         schema: [{
-          id: "ID de usuario",
-          name: "Nombre del usuario",
-          email: "usuario@example.com",
-          password: "hashed_password",
+          id: "ID do usuario",
+          name: "Nome do usuario",
+          email: "usuario@exemplo.com",
+          password: "exemplo senha",
           birth_date: "YYYY-MM-DD",
-          user_type: "guia" // o "turista"
+          user_type: "guia" ou "turista"
         }]
       }
       #swagger.responses[500] = {
-        description: 'Error interno del servidor'
+        description: 'Erro interno do servidor'
       }
     */
     try {
@@ -40,34 +40,34 @@ class UserController {
       #swagger.tags = ['Usuarios']
       #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Crear Usuario',
+        description: 'Criar Usuário',
         required: true,
         schema: {
-          $name: "Nombre del usuario",
-          $email: "example@example.com",
-          $password: "password123",
+          $name: "Nome do usuario",
+          $email: "usuario@exemplo.com",
+          $password: "exemplo senha",
           $birth_date: "YYYY-MM-DD",
-          $user_type: "Tipo de usuario (guia) o (turista)"
+          $user_type: "Tipo de usuario (guia) ou (turista)"
         }
       }
       #swagger.responses[201] = {
-        description: 'Usuario creado con éxito',
+        description: 'Usuário criado com sucesso',
         schema: {
-          message: "Usuario creado con éxito",
+          message: "Usuário criado com sucesso",
           user: {
             id: 1,
-            name: "Nombre del usuario",
-            email: "usuario@example.com",
+            name: "Nome do usuario",
+            email: "usuario@exemplo.com",
             birth_date: "YYYY-MM-DD",
-            user_type: "guia" // o "turista"
+            user_type: "guia" ou "turista"
           }
         }
       }
       #swagger.responses[400] = {
-        description: 'Error de validación o email existente'
+        description: 'Erro de validação ou email inexistente'
       }
       #swagger.responses[500] = {
-        description: 'Error interno del servidor'
+        description: 'Erro interno do servidor'
       }
     */
     try {
@@ -80,7 +80,7 @@ class UserController {
 
       if (!birth_date.match(/\d{4}-\d{2}-\d{2}/gm)) {
         return res.status(400).json({
-          message: "Formato correcto de la fecha de nacimiento: AAAA-MM-DD",
+          message: "Formato correto da data de nascimento: AAAA-MM-DD",
         });
       }
 
@@ -90,7 +90,7 @@ class UserController {
 
       if (existingUser) {
         return res.status(400).json({
-          message: "El email ya está registrado. Por favor, elija otro.",
+          message: "O email inserido já existe. Por favor, escolha outro.",
         });
       }
 
@@ -104,7 +104,7 @@ class UserController {
         user_type,
       });
 
-      res.status(201).json({ message: "Usuario creado con éxito", user });
+      res.status(201).json({ message: "Usuário criado com sucesso", user });
     } catch (error) {
       handleCatchError(error, res, "create_user");
     }
@@ -113,27 +113,27 @@ class UserController {
   async delete(req, res) {
     /*  
       #swagger.tags = ['Usuarios']
-      #swagger.description = 'Eliminar un usuario por ID'
+      #swagger.description = 'Eliminar um usuario por ID'
       #swagger.parameters['id'] = {
         in: 'path',
-        description: 'ID del usuario a eliminar',
+        description: 'ID do usuario a eliminar',
         required: true,
         type: 'integer'
       }
       #swagger.responses[200] = {
-        description: 'Usuario eliminado con éxito',
+        description: 'Usuário eliminado com sucesso',
         schema: {
-          message: "Usuario eliminado con éxito"
+          message: "Usuário eliminado com sucesso"
         }
       }
       #swagger.responses[403] = {
-        description: 'Usuario no puede ser eliminado por falta de permisos o tiene tours asociados'
+        description: 'Você não tem permissão para eliminar este usuário.'
       }
       #swagger.responses[404] = {
-        description: 'Usuario no encontrado'
+        description: 'Usuário não encontrado'
       }
       #swagger.responses[500] = {
-        description: 'Error interno del servidor'
+        description: 'Erro interno do servidor'
       }
     */
     try {
@@ -146,18 +146,19 @@ class UserController {
       });
 
       if (!user) {
-        return res.status(404).json({ message: "Usuario no encontrado" });
+        return res.status(404).json({ message: "Usuário não encontrado" });
       }
 
       if (tours.length > 0) {
         return res.status(403).json({
-          message: "Usuario no puede ser eliminado, tiene tours asociados",
+          message:
+            "Usuário não pode ser eliminado pois tem passeios associados",
         });
       }
 
       if (user.id !== authenticatedUserId) {
         return res.status(403).json({
-          message: "No tienes permiso para eliminar este usuario.",
+          message: "Você não tem permissão para eliminar este usuário.",
         });
       }
 
@@ -165,7 +166,7 @@ class UserController {
         where: { id },
       });
 
-      res.status(200).json({ message: "Usuario eliminado con éxito" });
+      res.status(200).json({ message: "Usuário eliminado com sucesso" });
     } catch (error) {
       handleCatchError(error, res, "delete_user");
     }

@@ -14,22 +14,22 @@ class TourController {
   async findAll_tours(req, res) {
     /*  
       #swagger.tags = ['Passeios'],
-      #swagger.description = 'Endpoint para obtener todos los passeio',
+      #swagger.description = 'Endpoint para obter todos os passeios',
       #swagger.responses[200] = {
-        description: 'Lista de passeios obtenida con éxito',
+        description: 'Lista de passeios obtida com sucesso',
         schema: [{
-          id: "Passeio id",
-          tour_title: "Título del paseo",
-          description: "Descripción del paseo",
-          local: "Localización del paseo",
-          price: 100.0,
-          date: "2023-07-06",
-          max_number_users: 20,
-          user_id: "Usuario id"
+          id: "Id do Passeio",
+          tour_title: "Título do passeio",
+          description: "Descrição do passeio",
+          local: "Localização do passeio",
+          price: "Exemplo de preço",
+          date: "Exemplo da data 2023-07-06",
+          max_number_users: "Exemplo quantidade de usuários",
+          user_id: "Id do Usuário"
         }]
       }
       #swagger.responses[500] = {
-        description: 'Error interno del servidor'
+        description: 'Erro interno do servidor'
       }
     */
     try {
@@ -46,35 +46,35 @@ class TourController {
   async findOne_review(req, res) {
     /*  
       #swagger.tags = ['Passeios']
-      #swagger.description = 'Endpoint para obtener las evaluaciones de un paseo'
+      #swagger.description = 'Endpoint para obter as avaliações do passeio'
       #swagger.parameters['id'] = {
         in: 'path',
-        description: 'ID del paseo',
+        description: 'ID do passeio',
         required: true,
         type: 'integer'
       }
       #swagger.responses[200] = {
-        description: 'Lista de evaluaciones obtenida con éxito',
+        description: 'Lista de avaliações obtida com sucesso',
         schema: [{
-          id: 1,
-          tour_id: 1,
-          user_id: 1,
-          scores: 5,
-          comment: "Excelente paseo"
+          id: "Id da avaliação",
+          tour_id: "Id do passeio",
+          user_id: "Id do usuário",
+          scores: "Exemplo de nota",
+          comment: "Um comentário"
         }]
       }
       #swagger.responses[404] = {
-        description: 'Paseo no encontrado o sin evaluaciones'
+        description: 'Passeio não encontrado ou sem avaliações'
       }
       #swagger.responses[500] = {
-        description: 'Error interno del servidor'
+        description: 'Erro interno do servidor'
       }
     */
     try {
       const { id } = req.params;
       const tour = await Tour.findByPk(id);
       if (!tour) {
-        return res.status(404).json({ message: "Passeio não existe" });
+        return res.status(404).json({ message: "Passeio não existe." });
       }
 
       const toursReview = await Review.findAll({
@@ -84,7 +84,7 @@ class TourController {
       if (toursReview.length === 0) {
         return res
           .status(404)
-          .json({ message: "O passeio ainda não tem avaliações " });
+          .json({ message: "O passeio ainda não tem avaliações." });
       }
 
       const permission = await checkUserPermission(
@@ -96,7 +96,7 @@ class TourController {
       );
       if (!permission) return;
 
-      res.json({ message: "Avaliações de este passeio", toursReview });
+      res.json({ message: "Avaliações deste passeio", toursReview });
     } catch (error) {
       handleCatchError(error, res, "findOne_review");
     }
@@ -107,39 +107,39 @@ class TourController {
       #swagger.tags = ['Passeios']
       #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Crear un nuevo paseo',
+        description: 'Criar um novo passeio',
         required: true,
         schema: {
-          $tour_title: "Título del paseo",
-          $description: "Descripción del paseo",
-          $local: "Localización del paseo",
-          $price: 100.0,
-          $date: "2023-07-06",
-          $max_number_users: 20,
-          $user_id: 1
+          $tour_title: "Título do passeio",
+          $description: "Descrição do passeio",
+          $local: "Localização do passeio",
+          $price: "Exemplo de preço",
+          $date: "Exemplo da data 2023-07-06",
+          $max_number_users: "Exemplo quantidade de usuários",
+          $user_id: "Id do Usuário"
         }
       }
       #swagger.responses[201] = {
-        description: 'Paseo creado con éxito',
+        description: 'Passeio criado com sucesso',
         schema: {
-          message: "Paseo creado con éxito",
+          message: "Passeio criado com sucesso",
           tour: {
-            id: 1,
-            tour_title: "Título del paseo",
-            description: "Descripción del paseo",
-            local: "Localización del paseo",
-            price: 100.0,
-            date: "2023-07-06",
-            max_number_users: 20,
-            user_id: 1
+            id: "Id do Passeio",
+            tour_title: "Título do passeio",
+            description: "Descrição do passeio",
+            local: "Localização do passeio",
+            price: "Exemplo de preço",
+            date: "Exemplo da data 2023-07-06",
+            max_number_users: "Exemplo quantidade de usuários",
+            user_id: "Id do Usuário"
           }
         }
       }
       #swagger.responses[400] = {
-        description: 'Error de validación o usuario no encontrado'
+        description: 'Erro de validação ou usuário não encontrado'
       }
       #swagger.responses[500] = {
-        description: 'Error interno del servidor'
+        description: 'Erro interno do servidor'
       }
     */
     try {
@@ -160,7 +160,7 @@ class TourController {
 
       if (!date.match(/\d{4}-\d{2}-\d{2}/gm)) {
         return res.status(400).json({
-          message: "Formato correto da data e ANO-MES-DIA",
+          message: "Formato correto da data é ANO-MÊS-DIA",
         });
       }
 
@@ -169,7 +169,7 @@ class TourController {
       if (!user) {
         return res
           .status(404)
-          .json("Passeio deve estar vinculado a um usuario existente");
+          .json("Passeio deve estar vinculado à um usuário existente");
       }
 
       const create_tour = await Tour.create({
@@ -195,32 +195,32 @@ class TourController {
       #swagger.tags = ['Passeios']
       #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Crear una nueva reserva',
+        description: 'Criar uma nova reserva',
         required: true,
         schema: {
-          $user_id: 1,
-          $tour_id: 1
+          $user_id: "Id do Usuário",
+          $tour_id: "Id do Passeio"
         }
       }
       #swagger.responses[201] = {
-        description: 'Reserva creada con éxito',
+        description: 'Reserva criada com sucesso',
         schema: {
-          message: "Reserva creada con éxito",
+          message: "Reserva criada com sucesso",
           booking: {
             id: 1,
-            user_id: 1,
-            tour_id: 1
+            user_id: "Id do Usuário",
+            tour_id: "Id do Passeio"
           }
         }
       }
       #swagger.responses[400] = {
-        description: 'Reservas para este paseo están agotadas'
+        description: 'Reservas para este passeio estão esgotadas'
       }
       #swagger.responses[404] = {
-        description: 'Paseo o usuario no encontrado'
+        description: 'Passeio ou usuário não encontrados'
       }
       #swagger.responses[500] = {
-        description: 'Error interno del servidor'
+        description: 'Erro interno do servidor'
       }
     */
     try {
@@ -233,7 +233,7 @@ class TourController {
       const user = await User.findByPk(user_id);
 
       if (!tour || !user) {
-        return res.status(404).json("Passeio ou Usuario não existe");
+        return res.status(404).json("Passeio ou Usuário não existem");
       }
 
       const booking = await Booking.findAndCountAll({
@@ -252,7 +252,7 @@ class TourController {
       });
       res
         .status(201)
-        .json({ message: "Reserva criado com sucesso", create_booking });
+        .json({ message: "Reserva criada com sucesso", create_booking });
     } catch (error) {
       handleCatchError(error, res, "create_booking");
     }
@@ -263,33 +263,33 @@ class TourController {
       #swagger.tags = ['Passeios']
       #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Crear una nueva evaluación',
+        description: 'Criar uma nova avaliação',
         required: true,
         schema: {
-          $user_id: 1,
-          $tour_id: 1,
-          $scores: 5,
-          $comment: "Comentario sobre el paseo"
+          $user_id: "Id do Usuário",
+          $tour_id: "Id do Passeio",
+          $scores: "Exemplo de nota",
+          $comment: "Um comentário"
         }
       }
       #swagger.responses[201] = {
-        description: 'Evaluación creada con éxito',
+        description: 'Avaliação criada com sucesso',
         schema: {
-          message: "Evaluación creada con éxito",
+          message: "Avaliação criada com sucesso",
           review: {
-            id: 1,
-            user_id: 1,
-            tour_id: 1,
-            scores: 5,
-            comment: "Comentario sobre el paseo"
+            id: "Id da Avaliação",
+            user_id: "Id do Usuário",
+            tour_id: "Id do Passeio",
+            scores: "Exemplo de nota",
+            comment: "Um comentário"
           }
         }
       }
       #swagger.responses[404] = {
-        description: 'Paseo o usuario no encontrado'
+        description: 'Passeio ou usuário não encontrados'
       }
       #swagger.responses[500] = {
-        description: 'Error interno del servidor'
+        description: 'Erro interno do servidor'
       }
     */
     try {
@@ -303,7 +303,7 @@ class TourController {
       const user = await User.findByPk(user_id);
 
       if (!tour || !user) {
-        return res.status(404).json("Passeio ou Usuario não existe");
+        return res.status(404).json("Passeio ou Usuário não existem");
       }
 
       const create_review = await Review.create({
@@ -314,7 +314,7 @@ class TourController {
       });
       res
         .status(201)
-        .json({ message: "Avaliação criado com sucesso", create_review });
+        .json({ message: "Avaliação criada com sucesso", create_review });
     } catch (error) {
       handleCatchError(error, res, "create_review");
     }
@@ -323,27 +323,27 @@ class TourController {
   async delete_tour(req, res) {
     /*  
       #swagger.tags = ['Passeios']
-      #swagger.description = 'Eliminar un paseo por ID'
+      #swagger.description = 'Eliminar um passeio por ID'
       #swagger.parameters['id'] = {
         in: 'path',
-        description: 'ID del paseo',
+        description: 'ID do passeio',
         required: true,
         type: 'integer'
       }
       #swagger.responses[200] = {
-        description: 'Paseo eliminado con éxito',
+        description: 'Passeio eliminado com sucesso',
         schema: {
-          message: "Paseo eliminado con éxito"
+          message: "Passeio eliminado com sucesso"
         }
       }
       #swagger.responses[404] = {
-        description: 'Paseo no encontrado'
+        description: 'Passeio não encontrado'
       }
       #swagger.responses[403] = {
-        description: 'Paseo no puede ser eliminado, pues tiene reservas asociadas'
+        description: 'Passeio não pode ser eliminado, pois tem reservas associadas.'
       }
       #swagger.responses[500] = {
-        description: 'Error interno del servidor'
+        description: 'Erro interno do servidor'
       }
     */
     try {
@@ -360,7 +360,7 @@ class TourController {
       if (tourBookings.length > 0) {
         return res.status(403).json({
           message:
-            "Passeio não pode ser eliminado, pois tem reservas associadas!",
+            "Passeio não pode ser eliminado, pois tem reservas associadas.",
         });
       }
 
@@ -385,31 +385,31 @@ class TourController {
   async delete_booking(req, res) {
     /*  
       #swagger.tags = ['Passeios']
-      #swagger.description = 'Eliminar una reserva por ID'
+      #swagger.description = 'Eliminar uma reserva por ID'
       #swagger.parameters['id'] = {
         in: 'path',
-        description: 'ID de la reserva',
+        description: 'Id da Reserva',
         required: true,
         type: 'integer'
       }
       #swagger.responses[200] = {
-        description: 'Reserva eliminada con éxito',
+        description: 'Reserva eliminada com sucesso',
         schema: {
-          message: "Reserva eliminada con éxito"
+          message: "Reserva eliminada com sucesso"
         }
       }
       #swagger.responses[404] = {
-        description: 'Reserva no encontrada'
+        description: 'Reserva não encontrada'
       }
       #swagger.responses[500] = {
-        description: 'Error interno del servidor'
+        description: 'Erro interno do servidor'
       }
     */
     try {
       const { id } = req.params;
       const booking = await Booking.findByPk(id);
       if (!booking) {
-        return res.status(404).json({ message: "Reserva não encontrado" });
+        return res.status(404).json({ message: "Reserva não encontrada." });
       }
 
       const permission = await checkUserPermission(
@@ -424,7 +424,7 @@ class TourController {
       await Booking.destroy({
         where: { id },
       });
-      res.status(200).json({ message: "Reserva eliminado com sucesso" });
+      res.status(200).json({ message: "Reserva eliminada com sucesso." });
     } catch (error) {
       handleCatchError(error, res, "delete_booking");
     }
@@ -433,31 +433,31 @@ class TourController {
   async delete_review(req, res) {
     /*  
       #swagger.tags = ['Passeios']
-      #swagger.description = 'Eliminar una evaluación por ID'
+      #swagger.description = 'Eliminar uma avaliação por ID'
       #swagger.parameters['id'] = {
         in: 'path',
-        description: 'ID de la evaluación',
+        description: 'Id da avaliação',
         required: true,
         type: 'integer'
       }
       #swagger.responses[200] = {
-        description: 'Evaluación eliminada con éxito',
+        description: 'Avaliação eliminada com sucesso',
         schema: {
-          message: "Evaluación eliminada con éxito"
+          message: "Avaliação eliminada com sucesso"
         }
       }
       #swagger.responses[404] = {
-        description: 'Evaluación no encontrada'
+        description: 'Avaliação não encontrada'
       }
       #swagger.responses[500] = {
-        description: 'Error interno del servidor'
+        description: 'Erro interno do servidor'
       }
     */
     try {
       const { id } = req.params;
       const review = await Review.findByPk(id);
       if (!review) {
-        return res.status(404).json({ message: "Avaliação não encontrado" });
+        return res.status(404).json({ message: "Avaliação não encontrada." });
       }
 
       const permission = await checkUserPermission(
@@ -472,7 +472,7 @@ class TourController {
       await Review.destroy({
         where: { id },
       });
-      res.status(200).json({ message: "Avaliação eliminado com sucesso" });
+      res.status(200).json({ message: "Avaliação eliminada com sucesso." });
     } catch (error) {
       handleCatchError(error, res, "delete_review");
     }
@@ -481,39 +481,39 @@ class TourController {
   async update_review(req, res) {
     /*  
       #swagger.tags = ['Passeios']
-      #swagger.description = 'Actualizar una evaluación por ID'
+      #swagger.description = 'Atualizar uma avaliação por ID'
       #swagger.parameters['id'] = {
         in: 'path',
-        description: 'ID de la evaluación',
+        description: 'Id da avaliação',
         required: true,
         type: 'integer'
       }
       #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Datos para actualizar la evaluación',
+        description: 'Dados para atualizar a avaliação',
         required: true,
         schema: {
-          $user_id: 1,
-          $tour_id: 1,
-          $scores: 5,
-          $comment: "Comentario actualizado sobre el paseo"
+          $user_id: "Id do Usuário",
+          $tour_id: "Id do Passeio",
+          $scores: "Exemplo de nota",
+          $comment: "Um comentário"
         }
       }
       #swagger.responses[200] = {
-        description: 'Evaluación actualizada con éxito',
+        description: 'Avaliação atualizada com sucesso',
         schema: {
-          id: 1,
-          user_id: 1,
-          tour_id: 1,
-          scores: 5,
-          comment: "Comentario actualizado sobre el paseo"
+          id: "Id da Avaliação",
+          user_id: "Id do Usuário",
+          tour_id: "Id do Passeio",
+          scores: "Exemplo de nota",
+          comment: "Um comentário"
         }
       }
       #swagger.responses[404] = {
-        description: 'Evaluación, paseo o usuario no encontrado'
+        description: 'Avaliação, passeio ou usuário não encontrados'
       }
       #swagger.responses[500] = {
-        description: 'Error interno del servidor'
+        description: 'Erro interno do servidor'
       }
     */
     try {
@@ -526,7 +526,7 @@ class TourController {
       const review = await Review.findByPk(id);
 
       if (!review) {
-        return res.status(404).json({ message: "Avaliação não encontrado!" });
+        return res.status(404).json({ message: "Avaliação não encontrada." });
       }
 
       const { user_id, tour_id } = req.body;
@@ -542,7 +542,7 @@ class TourController {
         return res
           .status(404)
           .json(
-            "Não se pode atualizar uma avaliação de usuario o passeio que não existe"
+            "Não é possível atualizar uma avaliação de um usuário ou de um passeio inexistentes."
           );
       }
 

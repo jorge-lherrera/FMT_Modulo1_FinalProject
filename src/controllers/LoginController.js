@@ -11,7 +11,7 @@ class LoginController {
       #swagger.description = 'Endpoint para realizar login'
       #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Credenciales de usuario para iniciar sesión',
+        description: 'Credenciais de usuario para iniciar sessão',
         required: true,
         schema: {
           $email: "example@example.com",
@@ -19,16 +19,16 @@ class LoginController {
         }
       }
       #swagger.responses[200] = {
-        description: 'Login exitoso',
+        description: 'Login com sucesso',
         schema: {
           Token: "JWT token"
         }
       }
       #swagger.responses[404] = {
-        description: 'Usuario no encontrado o contraseña incorrecta'
+        description: 'Usuario não encontrado ou senha incorreta'
       }
       #swagger.responses[500] = {
-        description: 'Error interno del servidor'
+        description: 'Erro interno do servidor'
       }
     */
     try {
