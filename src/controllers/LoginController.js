@@ -5,6 +5,19 @@ const { loginSchema } = require("../middleware/validationSchemas");
 
 class LoginController {
   async login(req, res) {
+    /*  
+            #swagger.tags = ['Login'],
+            #swagger.parameters['body'] = {
+                in: 'body',
+                description: 'Executar Login',
+                schema: {
+                    $email: "teste123@gmail.com",
+                    $password: "teste123",
+                    
+            }
+        }
+    */
+
     try {
       await loginSchema.validate(req.body, {
         abortEarly: false,

@@ -4,7 +4,8 @@
   "description": "Projeto Final Modulo 1",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon src/index.js"
+    "start": "nodemon src/index.js",
+    "swagger": "node ./swagger.js"
   },
   "author": "Jorge Herrera",
   "license": "ISC",

@@ -6,6 +6,25 @@ const handleCatchError = require("../middleware/handleCatchErrors");
 
 class UserController {
   async findAll(req, res) {
+    /*  
+        #swagger.tags = ['Usuarios']
+        #swagger.description = 'Endpoint para obtener todos los usuarios'
+        #swagger.responses[200] = {
+            description: 'Lista de usuarios obtenida con éxito',
+            schema: [{
+                id: "id de usuario",
+                name: "Nombre del usuario",
+                email: "usuario@example.com",
+                password: "hashed_password",
+                birth_date: "YYYY-MM-DD",
+                user_type: "guia" // o "turista"
+            }]
+        }
+        #swagger.responses[500] = {
+            description: 'Error interno del servidor'
+        }
+    */
+
     try {
       const users = await User.findAll();
       if (res) {
@@ -18,6 +37,41 @@ class UserController {
     }
   }
   async create(req, res) {
+    /*  
+    #swagger.tags = ['Usuarios']
+    #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Crear Usuario',
+        required: true,
+        schema: {
+            $name: "Um nome",
+            $email: "teste123@gmail.com",
+            $password: "teste123",
+            $birth_date: "Data de nascimento",
+            $user_type: "Tipo de usuario (guia) ou (turista)"
+        }
+    }
+    #swagger.responses[201] = {
+        description: 'Usuario creado con éxito',
+        schema: {
+            message: "Usuario creado con éxito",
+            user: {
+                id: 1,
+                name: "Nombre del usuario",
+                email: "usuario@example.com",
+                birth_date: "YYYY-MM-DD",
+                user_type: "guia" // o "turista"
+            }
+        }
+    }
+    #swagger.responses[400] = {
+        description: 'Error de validación o email existente'
+    }
+    #swagger.responses[500] = {
+        description: 'Error interno del servidor'
+    }
+*/
+
     try {
       await userSchema.validate(req.body, {
         abortEarly: false,
@@ -58,6 +112,31 @@ class UserController {
     }
   }
   async delete(req, res) {
+    /*  
+      #swagger.tags = ['Usarios']
+      #swagger.description = 'Eliminar un usuario'
+      #swagger.parameters['id'] = {
+        in: 'path',
+        description: 'ID del usuario a eliminar',
+        required: true,
+        type: 'integer'
+      }
+      #swagger.responses[200] = {
+        description: 'Usuario eliminado con éxito',
+        schema: {
+          message: "Usuario eliminado con éxito"
+        }
+      }
+      #swagger.responses[403] = {
+        description: 'Usuario no puede ser eliminado por falta de permisos o tiene tours asociados'
+      }
+      #swagger.responses[404] = {
+        description: 'Usuario no encontrado'
+      }
+      #swagger.responses[500] = {
+        description: 'Error interno del servidor'
+      }
+    */
     try {
       const { id } = req.params;
       const authenticatedUserId = req.payload.sub;
