@@ -13,12 +13,12 @@ const handleCatchError = require("../middleware/handleCatchErrors");
 class TourController {
   async findAll_tours(req, res) {
     /*  
-            #swagger.tags = ['Passeios'],
-            #swagger.description = 'Endpoint para obtener todos los passeio'
-            #swagger.responses[200] = {
-            description: 'Lista de passeios obtenida con éxito',
-            schema: [{
-        id: "Passeio id",
+      #swagger.tags = ['Passeios'],
+      #swagger.description = 'Endpoint para obtener todos los passeio',
+      #swagger.responses[200] = {
+        description: 'Lista de passeios obtenida con éxito',
+        schema: [{
+          id: "Passeio id",
           tour_title: "Título del paseo",
           description: "Descripción del paseo",
           local: "Localización del paseo",
@@ -26,11 +26,11 @@ class TourController {
           date: "2023-07-06",
           max_number_users: 20,
           user_id: "Usuario id"
-            }]
-        }
-             #swagger.responses[500] = {
-            description: 'Error interno del servidor'
-        }
+        }]
+      }
+      #swagger.responses[500] = {
+        description: 'Error interno del servidor'
+      }
     */
     try {
       const tours = await Tour.findAll();
@@ -42,6 +42,7 @@ class TourController {
       handleCatchError(error, res, "findAll_tours");
     }
   }
+
   async findOne_review(req, res) {
     /*  
       #swagger.tags = ['Passeios']
@@ -100,6 +101,7 @@ class TourController {
       handleCatchError(error, res, "findOne_review");
     }
   }
+
   async create_tour(req, res) {
     /*  
       #swagger.tags = ['Passeios']
@@ -158,7 +160,7 @@ class TourController {
 
       if (!date.match(/\d{4}-\d{2}-\d{2}/gm)) {
         return res.status(400).json({
-          message: "Formato correto da data de nascimento e ANO-MES-DIA",
+          message: "Formato correto da data e ANO-MES-DIA",
         });
       }
 
@@ -187,6 +189,7 @@ class TourController {
       handleCatchError(error, res, "create_tour");
     }
   }
+
   async create_booking(req, res) {
     /*  
       #swagger.tags = ['Passeios']
@@ -254,6 +257,7 @@ class TourController {
       handleCatchError(error, res, "create_booking");
     }
   }
+
   async create_review(req, res) {
     /*  
       #swagger.tags = ['Passeios']
@@ -315,6 +319,7 @@ class TourController {
       handleCatchError(error, res, "create_review");
     }
   }
+
   async delete_tour(req, res) {
     /*  
       #swagger.tags = ['Passeios']
@@ -376,6 +381,7 @@ class TourController {
       handleCatchError(error, res, "delete_tour");
     }
   }
+
   async delete_booking(req, res) {
     /*  
       #swagger.tags = ['Passeios']
@@ -423,6 +429,7 @@ class TourController {
       handleCatchError(error, res, "delete_booking");
     }
   }
+
   async delete_review(req, res) {
     /*  
       #swagger.tags = ['Passeios']
@@ -470,6 +477,7 @@ class TourController {
       handleCatchError(error, res, "delete_review");
     }
   }
+
   async update_review(req, res) {
     /*  
       #swagger.tags = ['Passeios']

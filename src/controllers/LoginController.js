@@ -2,22 +2,35 @@ const { sign } = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/User");
 const { loginSchema } = require("../middleware/validationSchemas");
+const handleCatchError = require("../middleware/handleCatchErrors");
 
 class LoginController {
   async login(req, res) {
     /*  
-            #swagger.tags = ['Login'],
-            #swagger.parameters['body'] = {
-                in: 'body',
-                description: 'Executar Login',
-                schema: {
-                    $email: "teste123@gmail.com",
-                    $password: "teste123",
-                    
-            }
+      #swagger.tags = ['Login']
+      #swagger.description = 'Endpoint para realizar login'
+      #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Credenciales de usuario para iniciar sesión',
+        required: true,
+        schema: {
+          $email: "example@example.com",
+          $password: "password123"
         }
+      }
+      #swagger.responses[200] = {
+        description: 'Login exitoso',
+        schema: {
+          Token: "JWT token"
+        }
+      }
+      #swagger.responses[404] = {
+        description: 'Usuario no encontrado o contraseña incorrecta'
+      }
+      #swagger.responses[500] = {
+        description: 'Error interno del servidor'
+      }
     */
-
     try {
       await loginSchema.validate(req.body, {
         abortEarly: false,
@@ -29,9 +42,10 @@ class LoginController {
       const user = await User.findOne({
         where: { email },
       });
+
       if (!user) {
         return res.status(404).json({
-          error: "Nenhum usuario corresponde a email e senhas fornecidos!",
+          error: "Nenhum usuário corresponde ao email fornecido!",
         });
       }
 

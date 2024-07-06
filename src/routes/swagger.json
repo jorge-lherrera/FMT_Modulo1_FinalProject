@@ -24,22 +24,23 @@
         "tags": [
           "Login"
         ],
-        "description": "",
+        "description": "Endpoint para realizar login",
         "parameters": [
           {
             "name": "body",
             "in": "body",
-            "description": "Executar Login",
+            "description": "Credenciales de usuario para iniciar sesión",
+            "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "email": {
                   "type": "string",
-                  "example": "teste123@gmail.com"
+                  "example": "example@example.com"
                 },
                 "password": {
                   "type": "string",
-                  "example": "teste123"
+                  "example": "password123"
                 }
               },
               "required": [
@@ -51,10 +52,25 @@
         ],
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "Login exitoso",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Token": {
+                  "type": "string",
+                  "example": "JWT token"
+                }
+              },
+              "xml": {
+                "name": "main"
+              }
+            }
           },
           "404": {
-            "description": "Not Found"
+            "description": "Usuario no encontrado o contraseña incorrecta"
+          },
+          "500": {
+            "description": "Error interno del servidor"
           }
         }
       }
@@ -62,7 +78,7 @@
     "/": {
       "get": {
         "tags": [
-          "Usarios"
+          "Usuarios"
         ],
         "description": "Endpoint para obtener todos los usuarios",
         "responses": {
@@ -89,23 +105,23 @@
               "properties": {
                 "name": {
                   "type": "string",
-                  "example": "Um nome"
+                  "example": "Nombre del usuario"
                 },
                 "email": {
                   "type": "string",
-                  "example": "teste123@gmail.com"
+                  "example": "example@example.com"
                 },
                 "password": {
                   "type": "string",
-                  "example": "teste123"
+                  "example": "password123"
                 },
                 "birth_date": {
                   "type": "string",
-                  "example": "Data de nascimento"
+                  "example": "YYYY-MM-DD"
                 },
                 "user_type": {
                   "type": "string",
-                  "example": "Tipo de usuario (guia) ou (turista)"
+                  "example": "Tipo de usuario (guia) o (turista)"
                 }
               },
               "required": [
@@ -131,9 +147,9 @@
     "/usuario/{id}": {
       "delete": {
         "tags": [
-          "Usarios"
+          "Usuarios"
         ],
-        "description": "Eliminar un usuario",
+        "description": "Eliminar un usuario por ID",
         "parameters": [
           {
             "name": "id",
