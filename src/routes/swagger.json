@@ -29,7 +29,7 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Credenciales de usuario para iniciar sesión",
+            "description": "Credenciais de usuario para iniciar sessão",
             "required": true,
             "schema": {
               "type": "object",
@@ -52,7 +52,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Login exitoso",
+            "description": "Login com sucesso",
             "schema": {
               "type": "object",
               "properties": {
@@ -67,10 +67,10 @@
             }
           },
           "404": {
-            "description": "Usuario no encontrado o contraseña incorrecta"
+            "description": "Usuario não encontrado ou senha incorreta"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Erro interno do servidor"
           }
         }
       }
@@ -80,7 +80,7 @@
         "tags": [
           "Usuarios"
         ],
-        "description": "Endpoint para obtener todos los usuarios",
+        "description": "Endpoint para obter todos os usuarios",
         "responses": {
           "200": {
             "description": "OK"
@@ -98,22 +98,22 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Crear Usuario",
+            "description": "Criar Usuário",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "name": {
                   "type": "string",
-                  "example": "Nombre del usuario"
+                  "example": "Nome do usuario"
                 },
                 "email": {
                   "type": "string",
-                  "example": "example@example.com"
+                  "example": "usuario@exemplo.com"
                 },
                 "password": {
                   "type": "string",
-                  "example": "password123"
+                  "example": "exemplo senha"
                 },
                 "birth_date": {
                   "type": "string",
@@ -121,7 +121,7 @@
                 },
                 "user_type": {
                   "type": "string",
-                  "example": "Tipo de usuario (guia) o (turista)"
+                  "example": "Tipo de usuario (guia) ou (turista)"
                 }
               },
               "required": [
@@ -149,14 +149,14 @@
         "tags": [
           "Usuarios"
         ],
-        "description": "Eliminar un usuario por ID",
+        "description": "Eliminar um usuario por ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "integer",
-            "description": "ID del usuario a eliminar"
+            "description": "ID do usuario a eliminar"
           },
           {
             "name": "authorization",
@@ -166,13 +166,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Usuario eliminado con éxito",
+            "description": "Usuário eliminado com sucesso",
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "Usuario eliminado con éxito"
+                  "example": "Usuário eliminado com sucesso"
                 }
               },
               "xml": {
@@ -184,13 +184,13 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Usuario no puede ser eliminado por falta de permisos o tiene tours asociados"
+            "description": "Você não tem permissão para eliminar este usuário."
           },
           "404": {
-            "description": "Usuario no encontrado"
+            "description": "Usuário não encontrado"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Erro interno do servidor"
           }
         }
       }
@@ -200,10 +200,10 @@
         "tags": [
           "Passeios"
         ],
-        "description": "Endpoint para obtener todos los passeio",
+        "description": "Endpoint para obter todos os passeios",
         "responses": {
           "200": {
-            "description": "Lista de passeios obtenida con éxito",
+            "description": "Lista de passeios obtida com sucesso",
             "schema": {
               "type": "array",
               "items": {
@@ -211,35 +211,35 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "example": "Passeio id"
+                    "example": "Id do Passeio"
                   },
                   "tour_title": {
                     "type": "string",
-                    "example": "Título del paseo"
+                    "example": "Título do passeio"
                   },
                   "description": {
                     "type": "string",
-                    "example": "Descripción del paseo"
+                    "example": "Descrição do passeio"
                   },
                   "local": {
                     "type": "string",
-                    "example": "Localización del paseo"
+                    "example": "Localização do passeio"
                   },
                   "price": {
-                    "type": "number",
-                    "example": 100
+                    "type": "string",
+                    "example": "Exemplo de preço"
                   },
                   "date": {
                     "type": "string",
-                    "example": "2023-07-06"
+                    "example": "Exemplo da data 2023-07-06"
                   },
                   "max_number_users": {
-                    "type": "number",
-                    "example": 20
+                    "type": "string",
+                    "example": "Exemplo quantidade de usuários"
                   },
                   "user_id": {
                     "type": "string",
-                    "example": "Usuario id"
+                    "example": "Id do Usuário"
                   }
                 }
               },
@@ -249,7 +249,7 @@
             }
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Erro interno do servidor"
           }
         }
       },
@@ -267,38 +267,38 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Crear un nuevo paseo",
+            "description": "Criar um novo passeio",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "tour_title": {
                   "type": "string",
-                  "example": "Título del paseo"
+                  "example": "Título do passeio"
                 },
                 "description": {
                   "type": "string",
-                  "example": "Descripción del paseo"
+                  "example": "Descrição do passeio"
                 },
                 "local": {
                   "type": "string",
-                  "example": "Localización del paseo"
+                  "example": "Localização do passeio"
                 },
                 "price": {
-                  "type": "number",
-                  "example": 100
+                  "type": "string",
+                  "example": "Exemplo de preço"
                 },
                 "date": {
                   "type": "string",
-                  "example": "2023-07-06"
+                  "example": "Exemplo da data 2023-07-06"
                 },
                 "max_number_users": {
-                  "type": "number",
-                  "example": 20
+                  "type": "string",
+                  "example": "Exemplo quantidade de usuários"
                 },
                 "user_id": {
-                  "type": "number",
-                  "example": 1
+                  "type": "string",
+                  "example": "Id do Usuário"
                 }
               },
               "required": [
@@ -315,48 +315,48 @@
         ],
         "responses": {
           "201": {
-            "description": "Paseo creado con éxito",
+            "description": "Passeio criado com sucesso",
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "Paseo creado con éxito"
+                  "example": "Passeio criado com sucesso"
                 },
                 "tour": {
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "number",
-                      "example": 1
+                      "type": "string",
+                      "example": "Id do Passeio"
                     },
                     "tour_title": {
                       "type": "string",
-                      "example": "Título del paseo"
+                      "example": "Título do passeio"
                     },
                     "description": {
                       "type": "string",
-                      "example": "Descripción del paseo"
+                      "example": "Descrição do passeio"
                     },
                     "local": {
                       "type": "string",
-                      "example": "Localización del paseo"
+                      "example": "Localização do passeio"
                     },
                     "price": {
-                      "type": "number",
-                      "example": 100
+                      "type": "string",
+                      "example": "Exemplo de preço"
                     },
                     "date": {
                       "type": "string",
-                      "example": "2023-07-06"
+                      "example": "Exemplo da data 2023-07-06"
                     },
                     "max_number_users": {
-                      "type": "number",
-                      "example": 20
+                      "type": "string",
+                      "example": "Exemplo quantidade de usuários"
                     },
                     "user_id": {
-                      "type": "number",
-                      "example": 1
+                      "type": "string",
+                      "example": "Id do Usuário"
                     }
                   }
                 }
@@ -367,7 +367,7 @@
             }
           },
           "400": {
-            "description": "Error de validación o usuario no encontrado"
+            "description": "Erro de validação ou usuário não encontrado"
           },
           "401": {
             "description": "Unauthorized"
@@ -376,7 +376,7 @@
             "description": "Not Found"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Erro interno do servidor"
           }
         }
       }
@@ -386,14 +386,14 @@
         "tags": [
           "Passeios"
         ],
-        "description": "Endpoint para obtener las evaluaciones de un paseo",
+        "description": "Endpoint para obter as avaliações do passeio",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "integer",
-            "description": "ID del paseo"
+            "description": "ID do passeio"
           },
           {
             "name": "authorization",
@@ -403,31 +403,31 @@
         ],
         "responses": {
           "200": {
-            "description": "Lista de evaluaciones obtenida con éxito",
+            "description": "Lista de avaliações obtida com sucesso",
             "schema": {
               "type": "array",
               "items": {
                 "type": "object",
                 "properties": {
                   "id": {
-                    "type": "number",
-                    "example": 1
+                    "type": "string",
+                    "example": "Id da avaliação"
                   },
                   "tour_id": {
-                    "type": "number",
-                    "example": 1
+                    "type": "string",
+                    "example": "Id do passeio"
                   },
                   "user_id": {
-                    "type": "number",
-                    "example": 1
+                    "type": "string",
+                    "example": "Id do usuário"
                   },
                   "scores": {
-                    "type": "number",
-                    "example": 5
+                    "type": "string",
+                    "example": "Exemplo de nota"
                   },
                   "comment": {
                     "type": "string",
-                    "example": "Excelente paseo"
+                    "example": "Um comentário"
                   }
                 }
               },
@@ -440,10 +440,10 @@
             "description": "Unauthorized"
           },
           "404": {
-            "description": "Paseo no encontrado o sin evaluaciones"
+            "description": "Passeio não encontrado ou sem avaliações"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Erro interno do servidor"
           }
         }
       },
@@ -451,14 +451,14 @@
         "tags": [
           "Passeios"
         ],
-        "description": "Actualizar una evaluación por ID",
+        "description": "Atualizar uma avaliação por ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "integer",
-            "description": "ID de la evaluación"
+            "description": "Id da avaliação"
           },
           {
             "name": "authorization",
@@ -468,26 +468,26 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Datos para actualizar la evaluación",
+            "description": "Dados para atualizar a avaliação",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "user_id": {
-                  "type": "number",
-                  "example": 1
+                  "type": "string",
+                  "example": "Id do Usuário"
                 },
                 "tour_id": {
-                  "type": "number",
-                  "example": 1
+                  "type": "string",
+                  "example": "Id do Passeio"
                 },
                 "scores": {
-                  "type": "number",
-                  "example": 5
+                  "type": "string",
+                  "example": "Exemplo de nota"
                 },
                 "comment": {
                   "type": "string",
-                  "example": "Comentario actualizado sobre el paseo"
+                  "example": "Um comentário"
                 }
               },
               "required": [
@@ -501,29 +501,29 @@
         ],
         "responses": {
           "200": {
-            "description": "Evaluación actualizada con éxito",
+            "description": "Avaliação atualizada com sucesso",
             "schema": {
               "type": "object",
               "properties": {
                 "id": {
-                  "type": "number",
-                  "example": 1
+                  "type": "string",
+                  "example": "Id da Avaliação"
                 },
                 "user_id": {
-                  "type": "number",
-                  "example": 1
+                  "type": "string",
+                  "example": "Id do Usuário"
                 },
                 "tour_id": {
-                  "type": "number",
-                  "example": 1
+                  "type": "string",
+                  "example": "Id do Passeio"
                 },
                 "scores": {
-                  "type": "number",
-                  "example": 5
+                  "type": "string",
+                  "example": "Exemplo de nota"
                 },
                 "comment": {
                   "type": "string",
-                  "example": "Comentario actualizado sobre el paseo"
+                  "example": "Um comentário"
                 }
               },
               "xml": {
@@ -535,10 +535,10 @@
             "description": "Unauthorized"
           },
           "404": {
-            "description": "Evaluación, paseo o usuario no encontrado"
+            "description": "Avaliação, passeio ou usuário não encontrados"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Erro interno do servidor"
           }
         }
       },
@@ -546,14 +546,14 @@
         "tags": [
           "Passeios"
         ],
-        "description": "Eliminar una evaluación por ID",
+        "description": "Eliminar uma avaliação por ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "integer",
-            "description": "ID de la evaluación"
+            "description": "Id da avaliação"
           },
           {
             "name": "authorization",
@@ -563,13 +563,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Evaluación eliminada con éxito",
+            "description": "Avaliação eliminada com sucesso",
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "Evaluación eliminada con éxito"
+                  "example": "Avaliação eliminada com sucesso"
                 }
               },
               "xml": {
@@ -581,10 +581,10 @@
             "description": "Unauthorized"
           },
           "404": {
-            "description": "Evaluación no encontrada"
+            "description": "Avaliação não encontrada"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Erro interno do servidor"
           }
         }
       }
@@ -604,18 +604,18 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Crear una nueva reserva",
+            "description": "Criar uma nova reserva",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "user_id": {
-                  "type": "number",
-                  "example": 1
+                  "type": "string",
+                  "example": "Id do Usuário"
                 },
                 "tour_id": {
-                  "type": "number",
-                  "example": 1
+                  "type": "string",
+                  "example": "Id do Passeio"
                 }
               },
               "required": [
@@ -627,13 +627,13 @@
         ],
         "responses": {
           "201": {
-            "description": "Reserva creada con éxito",
+            "description": "Reserva criada com sucesso",
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "Reserva creada con éxito"
+                  "example": "Reserva criada com sucesso"
                 },
                 "booking": {
                   "type": "object",
@@ -643,12 +643,12 @@
                       "example": 1
                     },
                     "user_id": {
-                      "type": "number",
-                      "example": 1
+                      "type": "string",
+                      "example": "Id do Usuário"
                     },
                     "tour_id": {
-                      "type": "number",
-                      "example": 1
+                      "type": "string",
+                      "example": "Id do Passeio"
                     }
                   }
                 }
@@ -659,16 +659,16 @@
             }
           },
           "400": {
-            "description": "Reservas para este paseo están agotadas"
+            "description": "Reservas para este passeio estão esgotadas"
           },
           "401": {
             "description": "Unauthorized"
           },
           "404": {
-            "description": "Paseo o usuario no encontrado"
+            "description": "Passeio ou usuário não encontrados"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Erro interno do servidor"
           }
         }
       }
@@ -688,26 +688,26 @@
           {
             "name": "body",
             "in": "body",
-            "description": "Crear una nueva evaluación",
+            "description": "Criar uma nova avaliação",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
                 "user_id": {
-                  "type": "number",
-                  "example": 1
+                  "type": "string",
+                  "example": "Id do Usuário"
                 },
                 "tour_id": {
-                  "type": "number",
-                  "example": 1
+                  "type": "string",
+                  "example": "Id do Passeio"
                 },
                 "scores": {
-                  "type": "number",
-                  "example": 5
+                  "type": "string",
+                  "example": "Exemplo de nota"
                 },
                 "comment": {
                   "type": "string",
-                  "example": "Comentario sobre el paseo"
+                  "example": "Um comentário"
                 }
               },
               "required": [
@@ -721,36 +721,36 @@
         ],
         "responses": {
           "201": {
-            "description": "Evaluación creada con éxito",
+            "description": "Avaliação criada com sucesso",
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "Evaluación creada con éxito"
+                  "example": "Avaliação criada com sucesso"
                 },
                 "review": {
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "number",
-                      "example": 1
+                      "type": "string",
+                      "example": "Id da Avaliação"
                     },
                     "user_id": {
-                      "type": "number",
-                      "example": 1
+                      "type": "string",
+                      "example": "Id do Usuário"
                     },
                     "tour_id": {
-                      "type": "number",
-                      "example": 1
+                      "type": "string",
+                      "example": "Id do Passeio"
                     },
                     "scores": {
-                      "type": "number",
-                      "example": 5
+                      "type": "string",
+                      "example": "Exemplo de nota"
                     },
                     "comment": {
                       "type": "string",
-                      "example": "Comentario sobre el paseo"
+                      "example": "Um comentário"
                     }
                   }
                 }
@@ -764,10 +764,10 @@
             "description": "Unauthorized"
           },
           "404": {
-            "description": "Paseo o usuario no encontrado"
+            "description": "Passeio ou usuário não encontrados"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Erro interno do servidor"
           }
         }
       }
@@ -777,14 +777,14 @@
         "tags": [
           "Passeios"
         ],
-        "description": "Eliminar una reserva por ID",
+        "description": "Eliminar uma reserva por ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "integer",
-            "description": "ID de la reserva"
+            "description": "Id da Reserva"
           },
           {
             "name": "authorization",
@@ -794,13 +794,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Reserva eliminada con éxito",
+            "description": "Reserva eliminada com sucesso",
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "Reserva eliminada con éxito"
+                  "example": "Reserva eliminada com sucesso"
                 }
               },
               "xml": {
@@ -812,10 +812,10 @@
             "description": "Unauthorized"
           },
           "404": {
-            "description": "Reserva no encontrada"
+            "description": "Reserva não encontrada"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Erro interno do servidor"
           }
         }
       }
@@ -825,14 +825,14 @@
         "tags": [
           "Passeios"
         ],
-        "description": "Eliminar un paseo por ID",
+        "description": "Eliminar um passeio por ID",
         "parameters": [
           {
             "name": "id",
             "in": "path",
             "required": true,
             "type": "integer",
-            "description": "ID del paseo"
+            "description": "ID do passeio"
           },
           {
             "name": "authorization",
@@ -842,13 +842,13 @@
         ],
         "responses": {
           "200": {
-            "description": "Paseo eliminado con éxito",
+            "description": "Passeio eliminado com sucesso",
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "Paseo eliminado con éxito"
+                  "example": "Passeio eliminado com sucesso"
                 }
               },
               "xml": {
@@ -860,13 +860,13 @@
             "description": "Unauthorized"
           },
           "403": {
-            "description": "Paseo no puede ser eliminado, pues tiene reservas asociadas"
+            "description": "Passeio não pode ser eliminado, pois tem reservas associadas."
           },
           "404": {
-            "description": "Paseo no encontrado"
+            "description": "Passeio não encontrado"
           },
           "500": {
-            "description": "Error interno del servidor"
+            "description": "Erro interno do servidor"
           }
         }
       }
