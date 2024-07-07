@@ -53,7 +53,7 @@ class LoginController {
 
       if (!isPasswordValid) {
         return res.status(404).json({
-          error: "Senha incorreta!",
+          error: "Senha incorreta.",
         });
       }
 
