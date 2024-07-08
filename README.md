@@ -78,7 +78,7 @@ Para usar a API, você pode utilizar ferramentas como Postman ou cURL. A seguir,
 - **POST /passeio**: Cria um novo passeio.
 - **GET /passeio**: Obtém uma lista de passeios.
 - **DELETE /passeio**: Exclui um passeio.
-- **POST /passeio/realizado**: Cria confirmação de usuários que já deram um passeio.
+- **POST /passeio/realizado**: Cria confirmação de usuários que já realizaram um passeio.
 
 #### Reservas
 
