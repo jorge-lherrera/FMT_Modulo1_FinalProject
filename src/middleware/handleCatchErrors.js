@@ -7,6 +7,8 @@ const catchErrorMap = {
   create_tour: "Não foi possível cadastrar o passeio",
   create_booking: "Não foi possível cadastrar a reserva",
   create_review: "Não foi possível cadastrar a avaliação",
+  create_usersWhoTookTour:
+    "Não foi possível cadastrar o usuário que realizou este passeio",
   delete_user: "Error ao eliminar o usuario",
   delete_tour: "Error ao eliminar a passeio",
   delete_booking: "Error ao eliminar a reserva",

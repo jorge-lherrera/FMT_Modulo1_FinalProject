@@ -2,7 +2,7 @@ const Tour = require("../models/Tour");
 const Booking = require("../models/Booking");
 const User = require("../models/User");
 const Review = require("../models/Review");
-const { Op, Sequelize } = require("sequelize");
+const { Sequelize } = require("sequelize");
 
 const {
   tourSchema,
@@ -315,8 +315,7 @@ class TourController {
 
       res.json("Sucesso ao adicionar");
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: "Algo deu errado" });
+      handleCatchError(error, res, "create_usersWhoTookTour");
     }
   }
 
