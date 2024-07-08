@@ -1,10 +1,10 @@
 # Titulo: Trip365
 
-Projeto final modulo 1 - Curso Floripa Mais Tec - Senai
+Projeto final módulo 1 - Curso Floripa Mais Tec - Senai
 
 ## Descrição
 
-Trip365 é uma plataforma que conecta viajantes com guias turísticos locais para oferecer experiências personalizadas. O objetivo é facilitar encontros entre pessoas que desejam explorar destinos de forma autêntica e guias que conhecem bem a região. Este projeto é um MVP (Produto Mínimo Viável), desenvolvido como uma API Rest utilizando Node.js, Express e PostgreSQL.
+Trip365 é uma plataforma que conecta viajantes com guias turísticos locais para oferecer experiências personalizadas. O objetivo é facilitar encontros entre pessoas que desejam explorar destinos de forma autêntica e guias que conheçam bem a região. Este projeto é um MVP (Produto Mínimo Viável), desenvolvido como uma API Rest utilizando Node.js, Express e PostgreSQL.
 
 ## Tabela de Conteúdos
 
@@ -13,7 +13,7 @@ Trip365 é uma plataforma que conecta viajantes com guias turísticos locais par
 - [Endpoints](#endpoints)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
 - [Melhorias Futuras](#melhorias-futuras)
-- [Autores](#autor)
+- [Autor](#autor)
 - [Problemas Resolvidos](#problemas-resolvidos)
 
 ## Instalação
@@ -46,14 +46,23 @@ Siga estes passos para configurar o ambiente de desenvolvimento e executar a apl
    No terminal:
    npx sequelize db:migrate
 
-6. Inicie o servidor:
+6. Execute os seguintes seeders
+
+   No terminal:
+
+npx sequelize db:seed --seed user.seeder.js
+npx sequelize db:seed --seed tour.seeder.js
+npx sequelize db:seed --seed booking.seeder.js
+npx sequelize db:seed --seed review.seeder.js
+
+7. Inicie o servidor:
 
    Arquivo de inicio - index.js
 
    No terminal:
    node index.js
 
-   Tambem e possivel instalar o nodemon e executar o archivo para melhor experiencia.
+   Também é possível instalar o nodemon e executar o arquivo para melhor experiência.
 
 ## Uso
 
