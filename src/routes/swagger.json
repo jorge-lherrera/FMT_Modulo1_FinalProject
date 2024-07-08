@@ -93,7 +93,7 @@
         "tags": [
           "Usuarios"
         ],
-        "description": "",
+        "description": "Endpoint para criar uma usuário",
         "parameters": [
           {
             "name": "body",

@@ -38,6 +38,7 @@ class UserController {
   async create(req, res) {
     /*  
       #swagger.tags = ['Usuarios']
+        #swagger.description = 'Endpoint para criar uma usuário'
       #swagger.parameters['body'] = {
         in: 'body',
         description: 'Criar Usuário',
