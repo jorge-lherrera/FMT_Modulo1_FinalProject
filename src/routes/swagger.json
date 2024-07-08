@@ -257,7 +257,7 @@
         "tags": [
           "Passeios"
         ],
-        "description": "",
+        "description": "Endpoint para criar um novo passeio",
         "parameters": [
           {
             "name": "authorization",
@@ -451,7 +451,7 @@
         "tags": [
           "Passeios"
         ],
-        "description": "Atualizar uma avaliação por ID",
+        "description": "Endpoint para atualizar uma avaliação",
         "parameters": [
           {
             "name": "id",
@@ -594,12 +594,17 @@
         "tags": [
           "Passeios"
         ],
-        "description": "",
+        "description": "Endpoint adicionar usuário que realizou o passeio",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "body",
             "in": "body",
-            "description": "Adicionar usuário que fez o passeio",
+            "description": "Adicionar usuário que realizou o passeio",
             "required": true,
             "schema": {
               "type": "object",
@@ -624,6 +629,9 @@
           "200": {
             "description": "Sucesso ao adicionar usuário ao passeio"
           },
+          "401": {
+            "description": "Unauthorized"
+          },
           "403": {
             "description": "Este usuário já realizou este passeio"
           },
@@ -641,7 +649,7 @@
         "tags": [
           "Passeios"
         ],
-        "description": "",
+        "description": "Endpoint para criar uma nova reserva",
         "parameters": [
           {
             "name": "authorization",
@@ -725,7 +733,7 @@
         "tags": [
           "Passeios"
         ],
-        "description": "",
+        "description": "Endpoint para criar uma avaliação",
         "parameters": [
           {
             "name": "authorization",

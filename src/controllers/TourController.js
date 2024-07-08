@@ -108,6 +108,7 @@ class TourController {
   async create_tour(req, res) {
     /*  
       #swagger.tags = ['Passeios']
+      #swagger.description = 'Endpoint para criar um novo passeio'
       #swagger.parameters['body'] = {
         in: 'body',
         description: 'Criar um novo passeio',
@@ -196,6 +197,7 @@ class TourController {
   async create_booking(req, res) {
     /*  
       #swagger.tags = ['Passeios']
+      #swagger.description = 'Endpoint para criar uma nova reserva'
       #swagger.parameters['body'] = {
         in: 'body',
         description: 'Criar uma nova reserva',
@@ -264,9 +266,10 @@ class TourController {
   async create_usersWhoTookTour(req, res) {
     /*  
       #swagger.tags = ['Passeios']
+      #swagger.description = 'Endpoint adicionar usuário que realizou o passeio'
       #swagger.parameters['body'] = {
         in: 'body',
-        description: 'Adicionar usuário que fez o passeio',
+        description: 'Adicionar usuário que realizou o passeio',
         required: true,
         schema: {
           $user_id: "Id do Usuário",
@@ -322,6 +325,7 @@ class TourController {
   async create_review(req, res) {
     /*  
       #swagger.tags = ['Passeios']
+      #swagger.description = 'Endpoint para criar uma avaliação'
       #swagger.parameters['body'] = {
         in: 'body',
         description: 'Criar uma nova avaliação',
@@ -550,7 +554,7 @@ class TourController {
   async update_review(req, res) {
     /*  
       #swagger.tags = ['Passeios']
-      #swagger.description = 'Atualizar uma avaliação por ID'
+      #swagger.description = 'Endpoint para atualizar uma avaliação'
       #swagger.parameters['id'] = {
         in: 'path',
         description: 'Id da avaliação',
