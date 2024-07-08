@@ -31,7 +31,7 @@ class Server {
 
       try {
         const usuarios = await UserController.findAll();
-        // console.log("Usuarios cadastrados:", usuarios);
+        console.log("Usuarios cadastrados:", usuarios);
       } catch (error) {
         console.error("Error al obtener los usuarios:", error);
       }
