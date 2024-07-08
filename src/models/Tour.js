@@ -32,6 +32,10 @@ const Tour = connection.define("tours", {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  usersWhoTookTour_id: {
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
+    defaultValue: [],
+  },
 });
 
 Tour.hasMany(Booking, { foreignKey: "tour_id", sourceKey: "id" });

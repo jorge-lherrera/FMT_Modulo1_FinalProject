@@ -102,10 +102,30 @@ const reviewSchema = yup
     "Os campos adicionais não são permitidos. Campos obrigatorios: user_id, tour_id, scores"
   );
 
+const usersWhoTookTourSchema = yup
+  .object()
+  .shape({
+    user_id: yup
+      .number()
+      .required("User ID e obrigatorio")
+      .positive("O ID de user deve ser um número positivo")
+      .integer("O ID de user deve ser um número inteiro"),
+    tour_id: yup
+      .number()
+      .required("Tour ID e obrigatorio")
+      .positive("O ID de tour deve ser um número positivo")
+      .integer("O ID de tour deve ser um número inteiro"),
+  })
+  .noUnknown(
+    true,
+    "Os campos adicionais não são permitidos. Campos obrigatorios: user_id, tour_id"
+  );
+
 module.exports = {
   loginSchema,
   userSchema,
   tourSchema,
   bookingSchema,
   reviewSchema,
+  usersWhoTookTourSchema,
 };

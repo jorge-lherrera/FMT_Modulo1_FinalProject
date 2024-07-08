@@ -44,6 +44,9 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
+      usersWhoTookTour_id: {
+        type: Sequelize.ARRAY(Sequelize.INTEGER),
+      },
 
       createdAt: {
         allowNull: false,

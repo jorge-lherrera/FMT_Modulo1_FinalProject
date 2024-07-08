@@ -589,6 +589,53 @@
         }
       }
     },
+    "/passeio/realizado": {
+      "post": {
+        "tags": [
+          "Passeios"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Adicionar usuário que fez o passeio",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user_id": {
+                  "type": "string",
+                  "example": "Id do Usuário"
+                },
+                "tour_id": {
+                  "type": "string",
+                  "example": "Id do Passeio"
+                }
+              },
+              "required": [
+                "user_id",
+                "tour_id"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Sucesso ao adicionar usuário ao passeio"
+          },
+          "403": {
+            "description": "Este usuário já realizou este passeio"
+          },
+          "404": {
+            "description": "Passeio ou usuário não existem"
+          },
+          "500": {
+            "description": "Erro interno do servidor"
+          }
+        }
+      }
+    },
     "/passeio/reserva": {
       "post": {
         "tags": [
@@ -762,6 +809,9 @@
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "Passeio ou usuário não encontrados"

@@ -46,14 +46,11 @@ Siga estes passos para configurar o ambiente de desenvolvimento e executar a apl
    No terminal:
    npx sequelize db:migrate
 
-6. Execute os seguintes seeders
+6. Executar seeder
 
    No terminal:
 
-npx sequelize db:seed --seed user.seeder.js
-npx sequelize db:seed --seed tour.seeder.js
-npx sequelize db:seed --seed booking.seeder.js
-npx sequelize db:seed --seed review.seeder.js
+npx sequelize db:seed:all
 
 7. Inicie o servidor:
 
@@ -81,6 +78,7 @@ Para usar a API, você pode utilizar ferramentas como Postman ou cURL. A seguir,
 - **POST /passeio**: Cria um novo passeio.
 - **GET /passeio**: Obtém uma lista de passeios.
 - **DELETE /passeio**: Exclui um passeio.
+- **POST /passeio/realizado**: Cria confirmação de usuários que já deram um passeio.
 
 #### Reservas
 

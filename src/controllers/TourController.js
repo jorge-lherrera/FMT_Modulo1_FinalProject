@@ -2,10 +2,13 @@ const Tour = require("../models/Tour");
 const Booking = require("../models/Booking");
 const User = require("../models/User");
 const Review = require("../models/Review");
+const { Op, Sequelize } = require("sequelize");
+
 const {
   tourSchema,
   bookingSchema,
   reviewSchema,
+  usersWhoTookTourSchema,
 } = require("../middleware/validationSchemas");
 const checkUserPermission = require("../middleware/validationUserPermission");
 const handleCatchError = require("../middleware/handleCatchErrors");
@@ -258,6 +261,65 @@ class TourController {
     }
   }
 
+  async create_usersWhoTookTour(req, res) {
+    /*  
+      #swagger.tags = ['Passeios']
+      #swagger.parameters['body'] = {
+        in: 'body',
+        description: 'Adicionar usuário que fez o passeio',
+        required: true,
+        schema: {
+          $user_id: "Id do Usuário",
+          $tour_id: "Id do Passeio"
+        }
+      }
+      #swagger.responses[200] = {
+        description: 'Sucesso ao adicionar usuário ao passeio'
+      }
+      #swagger.responses[403] = {
+        description: 'Este usuário já realizou este passeio'
+      }
+      #swagger.responses[404] = {
+        description: 'Passeio ou usuário não existem'
+      }
+      #swagger.responses[500] = {
+        description: 'Erro interno do servidor'
+      }
+    */
+    try {
+      await usersWhoTookTourSchema.validate(req.body, {
+        abortEarly: false,
+        strict: true,
+      });
+
+      const { user_id, tour_id } = req.body;
+
+      const tour = await Tour.findByPk(tour_id);
+      const user = await User.findByPk(user_id);
+
+      if (!tour || !user) {
+        return res.status(404).json("Passeio ou Usuário não existem");
+      }
+
+      const currentUsersWhoTookTour = tour.usersWhoTookTour_id || [];
+
+      if (currentUsersWhoTookTour.includes(user_id)) {
+        return res.status(403).json("Este usuário já realizou este passeio");
+      }
+
+      await tour.update({
+        usersWhoTookTour_id: Sequelize.literal(
+          `array_append("usersWhoTookTour_id", ${user_id})`
+        ),
+      });
+
+      res.json("Sucesso ao adicionar");
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Algo deu errado" });
+    }
+  }
+
   async create_review(req, res) {
     /*  
       #swagger.tags = ['Passeios']
@@ -304,6 +366,14 @@ class TourController {
 
       if (!tour || !user) {
         return res.status(404).json("Passeio ou Usuário não existem");
+      }
+
+      if (!tour.usersWhoTookTour_id.includes(user_id)) {
+        return res
+          .status(403)
+          .json(
+            "Somente usuários que fizeram o passeio podem criar avaliações"
+          );
       }
 
       const create_review = await Review.create({
