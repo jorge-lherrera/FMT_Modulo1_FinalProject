@@ -29,6 +29,37 @@ const User = connection.define("users", {
     type: DataTypes.ENUM("guia", "turista"),
     allowNull: false,
   },
+  sex: {
+    type: DataTypes.ENUM("M", "F"),
+    allowNull: false,
+  },
+  cpf: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    unique: true,
+    validate: {
+      len: { args: [11, 11] },
+    },
+  },
+  cep: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      len: { args: [8, 8] },
+    },
+  },
+  address: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+  state: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+  city: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
 });
 
 User.hasMany(Tour, { foreignKey: "user_id", sourceKey: "id" });

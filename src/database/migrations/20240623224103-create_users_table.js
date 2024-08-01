@@ -34,6 +34,37 @@ module.exports = {
         type: Sequelize.ENUM("guia", "turista"),
         allowNull: false,
       },
+      sex: {
+        type: Sequelize.ENUM("M", "F"),
+        allowNull: false,
+      },
+      cpf: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        unique: true,
+        validate: {
+          len: { args: [11, 11] },
+        },
+      },
+      cep: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+          len: { args: [8, 8] },
+        },
+      },
+      address: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
+      state: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
+      city: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

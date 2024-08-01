@@ -47,6 +47,33 @@ module.exports = {
       usersWhoTookTour_id: {
         type: Sequelize.ARRAY(Sequelize.INTEGER),
       },
+      cep: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+          len: { args: [8, 8] },
+        },
+      },
+      address: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
+      state: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
+      city: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
+      lat: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+      lng: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
 
       createdAt: {
         allowNull: false,

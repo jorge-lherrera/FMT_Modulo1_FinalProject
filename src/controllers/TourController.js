@@ -160,6 +160,12 @@ class TourController {
         date,
         max_number_users,
         user_id,
+        cep,
+        address,
+        state,
+        city,
+        lat,
+        lng,
       } = req.body;
 
       if (!date.match(/\d{4}-\d{2}-\d{2}/gm)) {
@@ -184,6 +190,12 @@ class TourController {
         date,
         max_number_users,
         user_id,
+        cep,
+        address,
+        state,
+        city,
+        lat,
+        lng,
       });
 
       res

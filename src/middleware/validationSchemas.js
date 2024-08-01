@@ -14,8 +14,8 @@ const loginSchema = yup
 const userSchema = yup
   .object()
   .shape({
-    name: yup.string().required("O nome e obrigatorio"),
-    email: yup.string().email().required("O email e obrigatorio"),
+    name: yup.string().required("O nome e obrigatório"),
+    email: yup.string().email().required("O email e obrigatório"),
     password: yup.string().required("A senha é obrigatoria"),
     birth_date: yup.string().required("A data de nascimento e obrigatoria"),
     user_type: yup
@@ -25,6 +25,25 @@ const userSchema = yup
         "O tipo de usuário deve ser 'guia' ou 'turista'"
       )
       .required("O tipo de usuário é obrigatório"),
+    sex: yup
+      .string()
+      .oneOf(["M", "F"], "O tipo de usuário deve ser 'Masculino' ou 'Feminino'")
+      .required("O sexo é obrigatório"),
+    cpf: yup
+      .number()
+      .required("CPF é obrigatório")
+      .integer("CPF deve ser um número inteiro")
+      .min(11, "CPF deve ter 11 números")
+      .max(11, "CPF deve ter 11 números"),
+    cep: yup
+      .number()
+      .required("CEP é obrigatório")
+      .integer("CEP deve ser um número inteiro")
+      .min(8, "CEP deve ter 8 números")
+      .max(8, "CEP deve ter 8 números"),
+    address: yup.string().required("O endereço e obrigatório"),
+    state: yup.string().required("O estado e obrigatório"),
+    city: yup.string().required("A cidade e obrigatório"),
   })
   .noUnknown(
     true,
@@ -51,6 +70,17 @@ const tourSchema = yup
     user_id: yup
       .number()
       .required("O id do guia que esta criando o passeio e obrigatorio"),
+    cep: yup
+      .number()
+      .required("CEP é obrigatório")
+      .integer("CEP deve ser um número inteiro")
+      .min(8, "CEP deve ter 8 números")
+      .max(8, "CEP deve ter 8 números"),
+    address: yup.string().required("O endereço e obrigatório"),
+    state: yup.string().required("O estado e obrigatório"),
+    city: yup.string().required("A cidade e obrigatório"),
+    lat: yup.integer().require("A latitude e obrigatoria"),
+    lng: yup.integer().require("A longitud e obrigatoria"),
   })
   .noUnknown(
     true,

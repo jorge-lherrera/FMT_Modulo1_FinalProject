@@ -36,6 +36,33 @@ const Tour = connection.define("tours", {
     type: DataTypes.ARRAY(DataTypes.INTEGER),
     defaultValue: [],
   },
+  cep: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    validate: {
+      len: { args: [8, 8] },
+    },
+  },
+  address: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+  state: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+  city: {
+    type: DataTypes.STRING(255),
+    allowNull: false,
+  },
+  lat: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  lng: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
 });
 
 Tour.hasMany(Booking, { foreignKey: "tour_id", sourceKey: "id" });

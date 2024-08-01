@@ -77,7 +77,19 @@ class UserController {
         strict: true,
       });
 
-      const { name, email, password, birth_date, user_type } = req.body;
+      const {
+        name,
+        email,
+        password,
+        birth_date,
+        user_type,
+        sex,
+        cpf,
+        cep,
+        address,
+        state,
+        city,
+      } = req.body;
 
       if (!birth_date.match(/\d{4}-\d{2}-\d{2}/gm)) {
         return res.status(400).json({
@@ -103,6 +115,12 @@ class UserController {
         password: hash,
         birth_date,
         user_type,
+        sex,
+        cpf,
+        cep,
+        address,
+        state,
+        city,
       });
 
       res.status(201).json({ message: "Usuário criado com sucesso", user });
