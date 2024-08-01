@@ -34,7 +34,7 @@ const User = connection.define("users", {
     allowNull: false,
   },
   cpf: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.BIGINT,
     allowNull: false,
     unique: true,
     validate: {

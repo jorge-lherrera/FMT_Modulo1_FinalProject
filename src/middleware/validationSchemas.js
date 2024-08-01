@@ -29,18 +29,8 @@ const userSchema = yup
       .string()
       .oneOf(["M", "F"], "O tipo de usuário deve ser 'Masculino' ou 'Feminino'")
       .required("O sexo é obrigatório"),
-    cpf: yup
-      .number()
-      .required("CPF é obrigatório")
-      .integer("CPF deve ser um número inteiro")
-      .min(11, "CPF deve ter 11 números")
-      .max(11, "CPF deve ter 11 números"),
-    cep: yup
-      .number()
-      .required("CEP é obrigatório")
-      .integer("CEP deve ser um número inteiro")
-      .min(8, "CEP deve ter 8 números")
-      .max(8, "CEP deve ter 8 números"),
+    cpf: yup.number().required("CPF é obrigatório"),
+    cep: yup.number().required("CEP é obrigatório"),
     address: yup.string().required("O endereço e obrigatório"),
     state: yup.string().required("O estado e obrigatório"),
     city: yup.string().required("A cidade e obrigatório"),
@@ -73,14 +63,12 @@ const tourSchema = yup
     cep: yup
       .number()
       .required("CEP é obrigatório")
-      .integer("CEP deve ser um número inteiro")
-      .min(8, "CEP deve ter 8 números")
-      .max(8, "CEP deve ter 8 números"),
+      .integer("CEP deve ser um número inteiro"),
     address: yup.string().required("O endereço e obrigatório"),
     state: yup.string().required("O estado e obrigatório"),
     city: yup.string().required("A cidade e obrigatório"),
-    lat: yup.integer().require("A latitude e obrigatoria"),
-    lng: yup.integer().require("A longitud e obrigatoria"),
+    lat: yup.number().required("A latitude e obrigatoria"),
+    lng: yup.number().required("A longitud e obrigatoria"),
   })
   .noUnknown(
     true,
