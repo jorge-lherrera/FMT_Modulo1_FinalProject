@@ -25,11 +25,14 @@ class UserController {
       }
     */
     try {
-      const users = await User.findAll();
-      if (res) {
-        return res.json(users);
-      }
-      return users;
+      // const users = await User.findAll();
+      // if (res) {
+      //   return res.json(users);
+      // }
+      // return users;
+      const { count, rows: users } = await User.findAndCountAll();
+
+      return res.json({ totalUsers: count, users });
     } catch (error) {
       handleCatchError(error, res, "findAll_users");
     }

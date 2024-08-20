@@ -36,13 +36,28 @@ class TourController {
       }
     */
     try {
-      const tours = await Tour.findAll();
-      if (res) {
-        return res.json(tours);
-      }
-      return tours;
+      // const tours = await Tour.findAll();
+      // if (res) {
+      //   return res.json(tours);
+      // }
+      // return tours;
+
+      const { count, rows: tours } = await Tour.findAndCountAll();
+
+      return res.json({ totalTours: count, tours });
     } catch (error) {
       handleCatchError(error, res, "findAll_tours");
+    }
+  }
+  async findAll_bookings(req, res) {
+    try {
+      const booking = await Booking.findAll();
+      if (res) {
+        return res.json(booking);
+      }
+      return booking;
+    } catch (error) {
+      console.log(error);
     }
   }
 
@@ -90,14 +105,14 @@ class TourController {
           .json({ message: "O passeio ainda não tem avaliações." });
       }
 
-      const permission = await checkUserPermission(
-        req,
-        res,
-        id,
-        "Tour",
-        "findReview"
-      );
-      if (!permission) return;
+      // const permission = await checkUserPermission(
+      //   req,
+      //   res,
+      //   id,
+      //   "Tour",
+      //   "findReview"
+      // );
+      // if (!permission) return;
 
       res.json({ message: "Avaliações deste passeio", toursReview });
     } catch (error) {
@@ -442,21 +457,21 @@ class TourController {
         where: { tour_id: id },
       });
 
-      if (tourBookings.length > 0) {
-        return res.status(403).json({
-          message:
-            "Passeio não pode ser eliminado, pois tem reservas associadas.",
-        });
-      }
+      // if (tourBookings.length > 0) {
+      //   return res.status(403).json({
+      //     message:
+      //       "Passeio não pode ser eliminado, pois tem reservas associadas.",
+      //   });
+      // }
 
-      const permission = await checkUserPermission(
-        req,
-        res,
-        id,
-        "Tour",
-        "deleteTour"
-      );
-      if (!permission) return;
+      // const permission = await checkUserPermission(
+      //   req,
+      //   res,
+      //   id,
+      //   "Tour",
+      //   "deleteTour"
+      // );
+      // if (!permission) return;
 
       await Tour.destroy({
         where: { id },
@@ -497,14 +512,14 @@ class TourController {
         return res.status(404).json({ message: "Reserva não encontrada." });
       }
 
-      const permission = await checkUserPermission(
-        req,
-        res,
-        id,
-        "Booking",
-        "deleteBooking"
-      );
-      if (!permission) return;
+      // const permission = await checkUserPermission(
+      //   req,
+      //   res,
+      //   id,
+      //   "Booking",
+      //   "deleteBooking"
+      // );
+      // if (!permission) return;
 
       await Booking.destroy({
         where: { id },

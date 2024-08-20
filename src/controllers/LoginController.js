@@ -43,17 +43,9 @@ class LoginController {
         where: { email },
       });
 
-      if (!user) {
-        return res.status(404).json({
-          error: "Nenhum usuário corresponde ao email fornecido!",
-        });
-      }
-
-      const isPasswordValid = await bcrypt.compare(password, user.password);
-
-      if (!isPasswordValid) {
-        return res.status(404).json({
-          error: "Senha incorreta.",
+      if (!user || !(await bcrypt.compare(password, user.password))) {
+        return res.status(401).json({
+          error: "Credenciais inválidas.",
         });
       }
 
