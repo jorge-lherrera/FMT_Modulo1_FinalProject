@@ -61,6 +61,24 @@ class TourController {
     }
   }
 
+  async findAll_tours_user(req, res) {
+    try {
+      const { id } = req.params;
+      const tours = await Tour.findAndCountAll({
+        where: { user_id: id },
+      });
+
+      if (tours.count === 0) {
+        return res
+          .status(404)
+          .json({ message: "O guia ainda não tem passeios cadastrados." });
+      }
+      res.json(tours);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   async findOne_review(req, res) {
     /*  
       #swagger.tags = ['Passeios']

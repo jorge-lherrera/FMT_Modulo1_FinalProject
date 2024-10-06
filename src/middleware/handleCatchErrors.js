@@ -19,7 +19,7 @@ const catchErrorMap = {
 function handleCatchError(error, res, action) {
   if (error.name === "ValidationError") {
     const errorMessages = error.errors;
-    return res.status(400).json({ errors: errorMessages });
+    return res.status(403).json({ errors: errorMessages });
   }
 
   console.log(error.message);

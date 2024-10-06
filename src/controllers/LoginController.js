@@ -41,6 +41,7 @@ class LoginController {
 
       const user = await User.findOne({
         where: { email },
+        attributes: ["id", "email", "password", "name", "user_type"],
       });
 
       if (!user || !(await bcrypt.compare(password, user.password))) {
@@ -49,11 +50,16 @@ class LoginController {
         });
       }
 
-      const payload = { sub: user.id, email: user.email, nome: user.name };
+      const payload = {
+        sub: user.id,
+        email: user.email,
+        nome: user.name,
+        user_type: user.user_type,
+      };
 
       const token = sign(payload, process.env.SECRET_JWT);
 
-      res.status(200).json({ Token: token });
+      res.status(200).json({ Token: token, user_type: user.user_type });
     } catch (error) {
       handleCatchError(error, res, "login");
     }

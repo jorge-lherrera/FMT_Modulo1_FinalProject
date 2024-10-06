@@ -6,6 +6,7 @@ const tourRoutes = new Router();
 
 tourRoutes.get("/passeio", TourController.findAll_tours);
 tourRoutes.get("/passeio/avaliacao/:id", TourController.findOne_review);
+tourRoutes.get("/passeio/user/:id", TourController.findAll_tours_user);
 tourRoutes.post("/passeio", TourController.create_tour);
 tourRoutes.post(
   "/passeio/realizado",
